@@ -68,6 +68,13 @@ const _nav = [
   },
 
   {
+    component: CNavItem,
+    name: 'Photo Gallery',
+    to: '/photogallery',
+    icon: <CIcon icon={cilFilterPhoto} customClassName="nav-icon" />,
+  },
+
+  {
     component: CNavGroup,
     name: 'Settings',
     icon: <CIcon icon={cilAppsSettings} customClassName="nav-icon" />,

@@ -1,4 +1,8 @@
 import React from 'react'
+import AddPhoto from './views/photogallery/AddPhoto'
+import EditPhoto from './views/photogallery/EditPhoto'
+import PhotoGallery from './views/photogallery/PhotoGallery'
+import ViewPhoto from './views/photogallery/ViewPhoto'
 
 const ChangePassword = React.lazy(() => import('./views/pages/login/ChangePassword'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
@@ -76,6 +80,10 @@ const routes = [
   { path: '/', name: 'Home', exact: true },
 
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/photogallery', name: 'Photo Gallery', element: PhotoGallery },
+  { path: '/photogallery/addphoto', name: 'Add Photo', element: AddPhoto },
+  { path: '/photogallery/editphoto/:id', name: 'Edit Photo', element: EditPhoto },
+  { path: '/photogallery/viewphoto/:id', name: 'View Photo', element: ViewPhoto },
 
   // properties
   { path: '/view/properties', name: 'ViewProperties', element: ViewProperties },
