@@ -56,7 +56,7 @@ const ViewPhoto = () => {
                   "
           >
             <div style={{ fontSize: '22px' }} className="fw-bold">
-              Edit Photo
+              View Photo
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <h4 className="mb-0"></h4>

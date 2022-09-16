@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import { isAutheticated } from 'src/components/auth/authhelper'
 import axios from 'axios'
 import { API } from 'src/API'
-import { convertDate } from '../Commonjs'
 import swal from 'sweetalert'
 
 const PhotoGallery = () => {
@@ -13,29 +12,14 @@ const PhotoGallery = () => {
   const [loading, setLoading] = useState(true)
   const [success, setSuccess] = useState(true)
   const [galleryData, setGalleryData] = useState([])
-  const [totalRes, setTotalRes] = useState(0)
-  const [paginationVal, setpaginationVal] = useState(10)
-  const [active, setActive] = useState(1)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [itemPerPage, setItemPerPage] = useState(10)
   const [showData, setShowData] = useState(galleryData)
 
-  const pageNumbers = []
-  let page = 1
-  let limitVal = 10
-  for (let i = 1; i <= Math.ceil(totalRes / paginationVal); i++) {
-    pageNumbers.push(i)
-  }
-
-  const getPageContent = async (e) => {
-    setActive(Number(e.target.value))
-    page = e.target.value * 1
-  }
-
-  const setLimitval = (e) => {
-    setpaginationVal(Number(e.target.value))
-    limitVal = Number(e.target.value)
+  const handleShowEntries = (e) => {
+    setCurrentPage(1)
+    setItemPerPage(e.target.value)
   }
 
   const getGalleryPhotos = () => {
@@ -147,7 +131,7 @@ const PhotoGallery = () => {
                           <select
                             style={{ width: '10%' }}
                             name=""
-                            onChange={(e) => setLimitval(e)}
+                            onChange={(e) => handleShowEntries(e)}
                             className="
                                 select-w
                                 custom-select custom-select-sm
@@ -179,9 +163,18 @@ const PhotoGallery = () => {
                         </tr>
                       </thead>
                       <tbody>
+                        {!loading && showData.length === 0 && (
+                          <tr className="text-center">
+                            <td colSpan="6">
+                              <h5>No Data Available</h5>
+                            </td>
+                          </tr>
+                        )}
                         {loading ? (
                           <tr>
-                            <td className="text-center">Loading...</td>
+                            <td className="text-center" colSpan="6">
+                              Loading...
+                            </td>
                           </tr>
                         ) : (
                           showData.map((photo, i) => {
@@ -196,7 +189,18 @@ const PhotoGallery = () => {
                                     height="80"
                                   />
                                 </td>
-                                <td className="text-center">{convertDate(photo.createdAt)}</td>
+                                {/* <td className="text-center">{convertDate(photo.createdAt)}</td> */}
+                                <td className="text-center">
+                                  {new Date(photo.createdAt).toLocaleString('en-GB', {
+                                    weekday: 'short',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    hour12: true,
+                                  })}
+                                </td>
 
                                 <td className="text-center">
                                   <Link to={`/photogallery/viewphoto/${photo._id}`}>
@@ -275,7 +279,7 @@ const PhotoGallery = () => {
 
                     <div className="col-sm-12 col-md-6">
                       <div className="d-flex">
-                        <ul className="pagination">
+                        <ul className="pagination ms-auto">
                           <li
                             className={
                               currentPage === 1
@@ -285,6 +289,7 @@ const PhotoGallery = () => {
                           >
                             <span
                               className="page-link"
+                              style={{ cursor: 'pointer' }}
                               onClick={() => setCurrentPage((prev) => prev - 1)}
                             >
                               Previous
@@ -295,6 +300,7 @@ const PhotoGallery = () => {
                             <li className="paginate_button page-item">
                               <span
                                 className="page-link"
+                                style={{ cursor: 'pointer' }}
                                 onClick={(e) => setCurrentPage((prev) => prev - 1)}
                               >
                                 {currentPage - 1}
@@ -303,7 +309,9 @@ const PhotoGallery = () => {
                           )}
 
                           <li className="paginate_button page-item active">
-                            <span className="page-link">{currentPage}</span>
+                            <span className="page-link" style={{ cursor: 'pointer' }}>
+                              {currentPage}
+                            </span>
                           </li>
 
                           {!(
@@ -313,6 +321,7 @@ const PhotoGallery = () => {
                             <li className="paginate_button page-item ">
                               <span
                                 className="page-link"
+                                style={{ cursor: 'pointer' }}
                                 onClick={() => {
                                   setCurrentPage((prev) => prev + 1)
                                 }}
@@ -331,6 +340,7 @@ const PhotoGallery = () => {
                           >
                             <span
                               className="page-link"
+                              style={{ cursor: 'pointer' }}
                               onClick={() => setCurrentPage((prev) => prev + 1)}
                             >
                               Next
