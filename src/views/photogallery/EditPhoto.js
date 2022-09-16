@@ -17,6 +17,7 @@ const EditPhoto = () => {
     imagePublicId: '',
   })
   const [loading, setLoading] = useState(false)
+  const [limiter, setLimiter] = useState({ title: 50, titleHas: 50 })
 
   const getPhotoData = () => {
     if (!id) {
@@ -37,6 +38,7 @@ const EditPhoto = () => {
           imageURL: res.data.data.image.url,
           imagePublicId: res.data.data.image.public_id,
         }))
+        setLimiter((prev) => ({ ...prev, titleHas: prev.title - res.data.data.title.length }))
       })
   }
 
@@ -46,6 +48,8 @@ const EditPhoto = () => {
 
   const handleChange = (e) => {
     if (e.target.id === 'title') {
+      if (e.target.value.length === limiter.title + 1) return
+      setLimiter((prev) => ({ ...prev, titleHas: prev.title - e.target.value.length }))
       setData((prev) => ({ ...prev, title: e.target.value }))
     }
     if (e.target.id === 'imageURL') {
@@ -190,6 +194,7 @@ const EditPhoto = () => {
                   value={data.title}
                   onChange={(e) => handleChange(e)}
                 />
+                <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
               </div>
               <div className="mb-3">
                 <label htmlFor="imageURL" className="form-label">
@@ -202,6 +207,7 @@ const EditPhoto = () => {
                   accept="image/*"
                   onChange={(e) => handleChange(e)}
                 />
+                <p className="pt-1 pl-2 text-secondary">Upload jpg, jpeg and png only*</p>
               </div>
               <div className="mb-3" style={{ height: '200px' }}>
                 <img src={data.imageURL} alt="" height="200px" />

@@ -15,9 +15,12 @@ const AddPhoto = () => {
     imageFile: '',
   })
   const [loading, setLoading] = useState(false)
+  const [limiter, setLimiter] = useState({ title: 50, titleHas: 50 })
 
   const handleChange = (e) => {
     if (e.target.id === 'title') {
+      if (e.target.value.length === limiter.title + 1) return
+      setLimiter((prev) => ({ ...prev, titleHas: prev.title - e.target.value.length }))
       setData((prev) => ({ ...prev, title: e.target.value }))
     }
     if (e.target.id === 'imageURL') {
@@ -157,8 +160,10 @@ const AddPhoto = () => {
                   className="form-control"
                   id="title"
                   value={data.title}
+                  maxLength="50"
                   onChange={(e) => handleChange(e)}
                 />
+                <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
               </div>
               <div className="mb-3">
                 <label htmlFor="imageURL" className="form-label">
@@ -171,6 +176,7 @@ const AddPhoto = () => {
                   accept="image/*"
                   onChange={(e) => handleChange(e)}
                 />
+                <p className="pt-1 pl-2 text-secondary">Upload jpg, jpeg and png only*</p>
               </div>
               <div className="mb-3" style={{ height: '200px' }}>
                 <img src={data.imageURL} alt="" height="200px" />
