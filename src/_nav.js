@@ -32,6 +32,57 @@ const _nav = [
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
+
+  ,
+  {
+    component: CNavGroup,
+    name: 'CMS',
+    icon: <CIcon icon={cilCommand} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Pages',
+
+        to: '/view/page',
+      },
+      // {
+      //   component: CNavItem,
+      //   name: 'Section 8',
+
+      //   to: '/view/section8',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'Section 80G',
+
+      //   to: '/view/section80g',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'UNGCNI',
+
+      //   to: '/view/ungcni',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'Niti Aayog NGO Darpan',
+
+      //   to: '/view/nitiaayog',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'Terms and Conditions',
+
+      //   to: '/view/tnc',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'Privacy Policy',
+
+      //   to: '/view/privacy',
+      // },
+    ],
+  },
   //uncomment if you need these functionality in futures
 
   // {
@@ -77,55 +128,6 @@ const _nav = [
         name: 'Logos',
         icon: <CIcon icon={cilCommand} customClassName="nav-icon" />,
         to: '/view/logos',
-      },
-      {
-        component: CNavGroup,
-        name: 'CMS',
-        icon: <CIcon icon={cilCommand} customClassName="nav-icon" />,
-        items: [
-          {
-            component: CNavItem,
-            name: 'Pages',
-
-            to: '/view/page',
-          },
-          {
-            component: CNavItem,
-            name: 'Section 8',
-
-            to: '/view/section8',
-          },
-          {
-            component: CNavItem,
-            name: 'Section 80G',
-
-            to: '/view/section80g',
-          },
-          {
-            component: CNavItem,
-            name: 'UNGCNI',
-
-            to: '/view/ungcni',
-          },
-          {
-            component: CNavItem,
-            name: 'Niti Aayog NGO Darpan',
-
-            to: '/view/nitiaayog',
-          },
-          {
-            component: CNavItem,
-            name: 'Terms and Conditions',
-
-            to: '/view/tnc',
-          },
-          {
-            component: CNavItem,
-            name: 'Privacy Policy',
-
-            to: '/view/privacy',
-          },
-        ],
       },
       {
         component: CNavItem,

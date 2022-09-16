@@ -1,97 +1,5 @@
-// import React, { useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
-// import Button from '@material-ui/core/Button'
-// import { Link } from 'react-router-dom'
-// import { DataGrid } from '@mui/material'
-// import './RelationMa.css'
-// export default function CmsLink1() {
-//   let style1 = {
-//     width: '150px',
-
-//     height: 'auto',
-//     color: 'white',
-//   }
-
-//   return (
-//     // <>
-//     //   <div className="main-content RelationMa">
-//     //     <div className="page-content">
-//     //       <div className="container-fluid">
-//     //         <div className="row">
-//     //           <div className="col-12">
-//     //             <div
-//     //               className="
-//     //                 page-title-box
-//     //                 d-flex
-//     //                 align-items-center
-//     //                 justify-content-between
-//     //               "
-//     //             >
-//     //               <div style={{ fontSize: '22px' }} className="fw-bold"></div>
-
-//     //               <div style={{ display: 'flex', gap: '1rem' }}>
-//     //                 <h4 className="mb-0"></h4>
-//     //               </div>
-
-//     //               <div className="d-flex">
-//     //                 <Button
-//     //                   variant="contained"
-//     //                   color="primary"
-//     //                   style={{
-//     //                     fontWeight: 'bold',
-//     //                     marginBottom: '1rem',
-//     //                     textTransform: 'capitalize',
-//     //                   }}
-//     //                   onClick={() => {
-//     //                     navigate('/add/relationmanager', { replace: true })
-//     //                   }}
-//     //                 >
-//     //                   Add Staff
-//     //                 </Button>
-//     //               </div>
-//     //             </div>
-//     //           </div>
-//     //         </div>
-//     //       </div>
-//     //     </div>
-//     //   </div>
-//     // </>
-//     <div className="container bg-light">
-//       <div className="container">
-//         <button type="button" class="btn btn-info btn-sm float-end" style={style1}>
-//           Add
-//         </button>
-//       </div>
-
-//       <div className="container m-5">
-//         <table className="table ">
-//           <thead>
-//             <tr>
-//               <th scope="col">Title</th>
-//               <th scope="col">Added On</th>
-//               <th scope="col">Action</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             <tr>
-//               <td>About Us</td>
-//               <td>14 sep 2001</td>
-//               <td>
-//                 <Link className="btn btn-primary btn-sm" to="/views/page/cmseditor">
-//                   Edit
-//                 </Link>
-//                 &nbsp;
-//                 <button className="btn btn-danger btn-sm">Delete</button>
-//               </td>
-//             </tr>
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   )
-// }
-
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -101,40 +9,53 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Button from '@material-ui/core/Button'
-
-//import TablePagination from '@mui/material/TablePagination'
-const createData = function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat }
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-]
-
-const comp1 = () => {
-  return (
-    <>
-      <Link className="btn btn-primary btn-sm" to="/view/page/cmseditor">
-        Edit
-      </Link>
-      &nbsp;
-      <button className="btn btn-danger btn-sm">Delete</button>
-    </>
-  )
-}
-const data = [
-  { title: 'About', date: '03 Dec 2021', id: 1 },
-  { title: 'Section 8', date: '13 Dec 2021', id: 2 },
-  { title: 'Section 80 G', date: '03 Sep 2021', id: 3 },
-  { title: 'UNGCNI', date: '03 Dec 2021', id: 4 },
-  { title: 'NITI AAYOG NGO DARPAN', date: '23 Oct 2021', id: 5 },
-  { title: 'Terms & Conditions', date: '03 Dec 2021', id: 6 },
-  { title: 'Privacy Policy', date: '30 March 2021', id: 7 },
-]
+import { API } from '../../../API'
+import { isAutheticated } from '../../../components/auth/authhelper'
 
 export default function AcccessibleTable() {
+  const [tabledata, updatetabledata] = useState([])
+  const { token } = isAutheticated()
+
+  //this function gets the table data from database
+  async function getTabledata() {
+    axios
+      .get(`${API}/api/addpage`)
+      .then((resp) => {
+        console.log('this is the response', resp.data.data)
+        updatetabledata(resp.data.data)
+      })
+      .catch((err) => {
+        console.log('thsi is the error ', err)
+      })
+  }
+
+  //this will delte the page on click
+  const deleteFunction = async (id) => {
+    if (window.confirm('Are you sure want to delete?')) {
+      try {
+        const res = await axios.delete(`${API}/api/addpage/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        if (res) {
+          // getcontactRe()
+          console.log('this is the resp', res)
+          getTabledata()
+          // updatetabledata([])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  const updateContentFunction = () => {}
+
+  useEffect(() => {
+    //this call is to get all the page content in the table data state
+    getTabledata()
+  }, [])
   return (
     <div className="container">
       <div className="row">
@@ -169,23 +90,34 @@ export default function AcccessibleTable() {
               <TableRow>
                 <TableCell align="left">Title</TableCell>
                 <TableCell align="center">Added On</TableCell>
-                <TableCell align="right">Action</TableCell>
+                <TableCell align="left">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((element) => {
+              {tabledata.map((element) => {
                 return (
-                  <TableRow key={element.id}>
+                  <TableRow key={element._id}>
                     <TableCell component="th" scope="row">
-                      {element.title}
+                      <Link to={`/view/page/${element.title}`} state={{ id: element._id }}>
+                        {' '}
+                        {element.title}
+                      </Link>
                     </TableCell>
-                    <TableCell align="center">{element.date}</TableCell>
+                    <TableCell align="center">{element.createdAt}</TableCell>
                     <TableCell align="center">
-                      <Link className="btn btn-primary btn-sm" to="/view/page/cmseditor">
+                      <Link
+                        className="btn btn-primary btn-sm"
+                        to={`/view/page/cmseditor/${element._id}`}
+                      >
                         Edit
                       </Link>
                       &nbsp;
-                      <button className="btn btn-danger btn-sm">Delete</button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => deleteFunction(element._id)}
+                      >
+                        Delete
+                      </button>
                     </TableCell>
                   </TableRow>
                 )
