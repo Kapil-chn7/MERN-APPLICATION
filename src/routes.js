@@ -1,5 +1,6 @@
 import React from 'react'
 import AddNewMenuItem from './views/menu/AddNewMenuItem'
+import EditMenuItem from './views/menu/EditMenuItem'
 import Menu from './views/menu/Menu'
 import AddPhoto from './views/photogallery/AddPhoto'
 import EditPhoto from './views/photogallery/EditPhoto'
@@ -89,6 +90,11 @@ const routes = [
 
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
 
+  //settings menu
+  { path: '/menu', name: 'Menu', element: Menu },
+  { path: '/menu/add', name: 'Add New Menu Item', element: AddNewMenuItem },
+  { path: '/menu/edit', name: 'Edit Menu Item', element: EditMenuItem },
+
   //photo gallery
   { path: '/photogallery', name: 'Photo Gallery', element: PhotoGallery },
   { path: '/photogallery/addphoto', name: 'Add Photo', element: AddPhoto },
@@ -129,10 +135,6 @@ const routes = [
   { path: '/view/cms', name: 'Cms', element: Cms },
   { path: '/edit/cms/:id', name: 'EditCms', element: EditCms },
   { path: '/view/cms/:id', name: 'ViewSingleCMS', element: ViewSingleCMS },
-
-  //settings menu
-  { path: '/settings/menu', name: 'Menu', element: Menu },
-  { path: '/settings/menu/add', name: 'Add New Menu Item', element: AddNewMenuItem },
 
   //social media
   { path: '/view/socialmedia', name: 'SocialMedia', element: SocialMedia },
