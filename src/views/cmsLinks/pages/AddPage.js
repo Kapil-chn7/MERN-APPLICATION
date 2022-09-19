@@ -3,9 +3,11 @@ import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import axios from 'axios'
 import { API } from '../../../API'
+import { isAutheticated } from '../../../components/auth/authhelper'
+import { useNavigate } from 'react-router-dom'
 export default function AddPage() {
   const [dataObj, updateData] = useState({ title: '', updateditorData: '' })
-
+  const navigate = useNavigate()
   //   useEffect(() => {}, [dataObj])
   const changeData = (event) => {
     let name = event.target.name
@@ -24,7 +26,16 @@ export default function AddPage() {
       alert('Please provide some input')
     } else {
       console.log('Sending to server', dataObj)
-      // axios.post()
+      const { token } = isAutheticated()
+      await axios
+        .post(`${API}/api/addpage`, dataObj)
+        .then((resp) => {
+          console.log('this is the resp', resp)
+          navigate('/view/page')
+        })
+        .catch((err) => {
+          console.log('this is the error ', err)
+        })
     }
   }
 

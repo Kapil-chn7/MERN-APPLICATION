@@ -58,12 +58,14 @@ const AddPage = React.lazy(() => import('./views/cmsLinks/pages/AddPage'))
 
 //cms links
 
-const section8 = React.lazy(() => import('./views/cmsLinks/pages/Section8'))
-const section80g = React.lazy(() => import('./views/cmsLinks/pages/Section80G'))
-const ungcni = React.lazy(() => import('./views/cmsLinks/pages/UNGCNI'))
-const nitiaayog = React.lazy(() => import('./views/cmsLinks/pages/NitiAyog'))
-const tnc = React.lazy(() => import('./views/cmsLinks/pages/TnC'))
-const privacy = React.lazy(() => import('./views/cmsLinks/pages/PrivacyPolicy'))
+// const section8 = React.lazy(() => import('./views/cmsLinks/pages/Section8'))
+// const section80g = React.lazy(() => import('./views/cmsLinks/pages/Section80G'))
+// const ungcni = React.lazy(() => import('./views/cmsLinks/pages/UNGCNI'))
+// const nitiaayog = React.lazy(() => import('./views/cmsLinks/pages/NitiAyog'))
+// const tnc = React.lazy(() => import('./views/cmsLinks/pages/TnC'))
+// const privacy = React.lazy(() => import('./views/cmsLinks/pages/PrivacyPolicy'))
+
+const MainPage = React.lazy(() => import('./views/cmsLinks/pages/MainCmslinkpage.js'))
 
 //social media
 const SocialMedia = React.lazy(() => import('./views/socialmedia/SocialMedia'))
@@ -148,20 +150,24 @@ const routes = [
 
   { path: '/view/addpage', name: 'Add Page', element: AddPage },
 
-  //CmsEditor
-  { path: '/view/page/cmseditor', name: 'Editor', element: CmsEditor },
+  //CmsEditor with id
+  { path: '/view/page/cmseditor/:id', name: 'Editor', element: CmsEditor },
 
   //cmslinks
 
-  { path: '/view/section8', name: 'Section 8', element: section8 },
-  { path: '/view/section80g', name: 'Section 80 G', element: section80g },
-  { path: '/view/ungcni', name: 'UNGCNI', element: ungcni },
-  { path: '/view/nitiaayog', name: 'Niti Aayog', element: nitiaayog },
-  { path: '/view/tnc', name: 'Terms and Conditions', element: tnc },
-  { path: '/view/privacy', name: 'Privacy Policy', element: privacy },
+  // { path: '/view/section8', name: 'Section 8', element: section8 },
+  // { path: '/view/section80g', name: 'Section 80 G', element: section80g },
+  // { path: '/view/ungcni', name: 'UNGCNI', element: ungcni },
+  // { path: '/view/nitiaayog', name: 'Niti Aayog', element: nitiaayog },
+  // { path: '/view/tnc', name: 'Terms and Conditions', element: tnc },
+  // { path: '/view/privacy', name: 'Privacy Policy', element: privacy },
 
-  //About Page
-  { path: '/view/about', name: 'About', element: About },
+  //this is main page for cmslinks
+
+  { path: '/view/page/:id', name: 'Links', element: MainPage },
+
+  // //About Page
+  // { path: '/view/about', name: 'About', element: About },
 ]
 
 export default routes
