@@ -75,6 +75,13 @@ const _nav = [
   },
 
   {
+    component: CNavItem,
+    name: 'Sliders',
+    to: '/sliders',
+    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+  },
+
+  {
     component: CNavGroup,
     name: 'Settings',
     icon: <CIcon icon={cilAppsSettings} customClassName="nav-icon" />,
