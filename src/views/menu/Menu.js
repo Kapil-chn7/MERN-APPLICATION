@@ -50,6 +50,36 @@ const Menu = () => {
     loadData()
   }, [currentPage, itemPerPage, menuData])
 
+  const handleDelete = (id) => {
+    swal({
+      title: 'Are you sure?',
+      icon: 'error',
+      buttons: { Yes: { text: 'Yes', value: true }, Cancel: { text: 'Cancel', value: 'cancel' } },
+    }).then((value) => {
+      if (value === true) {
+        axios
+          .delete(`${API}/api/menu/${id}`, {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            setSuccess((prev) => !prev)
+          })
+          .catch((err) => {
+            swal({
+              title: 'Warning',
+              text: 'Something went wrong!',
+              icon: 'error',
+              button: 'Retry',
+              dangerMode: true,
+            })
+          })
+      }
+    })
+  }
+
   return (
     <div className="main-content">
       <div className="page-content">
@@ -126,9 +156,9 @@ const Menu = () => {
                     >
                       <thead className="thead-light" style={{ background: '#ecdddd' }}>
                         <tr>
-                          <th className="text-center">Menu Name</th>
-                          <th className="text-center">Sub Menu Name</th>
-                          <th className="text-center">Linked Page</th>
+                          <th className="text-start">Menu Name</th>
+                          <th className="text-start">Sub Menu Name</th>
+                          <th className="text-start">Linked Page</th>
                           <th className="text-center">Actions</th>
                         </tr>
                       </thead>
@@ -150,12 +180,13 @@ const Menu = () => {
                           showData.map((menuitem, i) => {
                             return (
                               <tr key={i}>
-                                <td className="text-center">{menuitem.menu_name}</td>
-                                <td className="text-center">{menuitem.sub_manu_name}</td>
-                                <td className="text-center">{menuitem.linked_page}</td>
-
+                                <td className="text-start">{menuitem.menu_name}</td>
+                                <td className="text-start">
+                                  {menuitem.sub_menu_name ? menuitem.sub_menu_name : '-'}
+                                </td>
+                                <td className="text-start">{menuitem.linked_page?.title}</td>
                                 <td className="text-center">
-                                  <Link to={`/menu/edit/${menuitem._id}`}>
+                                  {menuitem.menu_name === 'Home' ? (
                                     <button
                                       style={{ color: 'white', margin: '0 1rem' }}
                                       type="button"
@@ -165,10 +196,26 @@ const Menu = () => {
                                     btn-table
                                     ml-2
                                   "
+                                      disabled={true}
                                     >
                                       Edit
                                     </button>
-                                  </Link>
+                                  ) : (
+                                    <Link to={`/menu/edit/${menuitem._id}`}>
+                                      <button
+                                        style={{ color: 'white', margin: '0 1rem' }}
+                                        type="button"
+                                        className="
+                                      btn btn-primary btn-sm
+                                    waves-effect waves-light
+                                    btn-table
+                                    ml-2
+                                  "
+                                      >
+                                        Edit
+                                      </button>
+                                    </Link>
+                                  )}
                                   <Link
                                     to={'#'}
                                     style={{
@@ -188,6 +235,7 @@ const Menu = () => {
                                       onClick={() => {
                                         handleDelete(menuitem._id)
                                       }}
+                                      disabled={menuitem.menu_name === 'Home' ? true : false}
                                     >
                                       Delete
                                     </button>

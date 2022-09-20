@@ -93,7 +93,7 @@ const routes = [
   //settings menu
   { path: '/menu', name: 'Menu', element: Menu },
   { path: '/menu/add', name: 'Add New Menu Item', element: AddNewMenuItem },
-  { path: '/menu/edit', name: 'Edit Menu Item', element: EditMenuItem },
+  { path: '/menu/edit/:id', name: 'Edit Menu Item', element: EditMenuItem },
 
   //photo gallery
   { path: '/photogallery', name: 'Photo Gallery', element: PhotoGallery },

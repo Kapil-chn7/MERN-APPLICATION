@@ -36,9 +36,7 @@ const AddNewMenuItem = () => {
       .then((res) => {
         setData((prev) => ({ ...prev, uniqId: res.data.data._id }))
       })
-      .catch((err) => {
-        window.location.reload()
-      })
+      .catch((err) => {})
   }
 
   const getPages = () => {
@@ -52,9 +50,7 @@ const AddNewMenuItem = () => {
       .then((res) => {
         setPages([...res.data.data])
       })
-      .catch((err) => {
-        window.location.reload()
-      })
+      .catch((err) => {})
   }
 
   useEffect(() => {
@@ -88,7 +84,7 @@ const AddNewMenuItem = () => {
     const formData = new FormData()
     formData.append('_id', data.uniqId)
     formData.append('menu_name', data.menuName)
-    formData.append('sub_menu_name', data.subMenuName)
+    formData.append('sub_menu_name', data.subMenuName.trim())
     formData.append('linked_page', data.pageToLink)
     axios
       .post(`${API}/api/menu`, formData, {

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import swal from 'sweetalert'
 import axios from 'axios'
 import { API } from 'src/API'
 import { isAutheticated } from 'src/components/auth/authhelper'
 
 const EditMenuItem = () => {
+  const id = useParams()?.id
   const { token } = isAutheticated()
   const navigate = useNavigate()
   const [data, setData] = useState({
@@ -16,6 +17,7 @@ const EditMenuItem = () => {
     uniqId: 'Loading',
     timestamp: new Date(),
   })
+  const [pages, setPages] = useState([])
   const [loading, setLoading] = useState(false)
   const [limiter, setLimiter] = useState({
     menuName: 50,
@@ -24,25 +26,52 @@ const EditMenuItem = () => {
     subMenuNameHas: 50,
   })
 
-  const getNewId = () => {
+  const getPages = () => {
     axios
-      .get(`${API}/api/menu/newid`, {
+      .get(`${API}/api/addpage`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        setData((prev) => ({ ...prev, uniqId: res.data.data._id }))
+        setPages([...res.data.data])
       })
-      .catch((err) => {
-        window.location.reload()
+      .catch((err) => {})
+  }
+
+  const getMenuItem = () => {
+    if (!id) {
+      navigate('/menu')
+      return
+    }
+    axios
+      .get(`${API}/api/menu/${id}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          Authorization: `Bearer ${token}`,
+        },
       })
+      .then((res) => {
+        setData((prev) => ({
+          ...prev,
+          menuName: res.data.data.menu_name,
+          subMenuName: res.data.data.sub_menu_name,
+          pageToLink: res.data.data.linked_page,
+          uniqId: res.data.data._id,
+          timestamp: new Date(res.data.data.createdAt),
+        }))
+      })
+      .catch((err) => {})
   }
 
   useEffect(() => {
-    // getNewId()
+    getPages()
   }, [])
+
+  useEffect(() => {
+    getMenuItem()
+  }, [pages])
 
   const handleChange = (e) => {
     if (e.target.type === 'text') {
@@ -55,7 +84,52 @@ const EditMenuItem = () => {
     setData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    if (data.menuName.trim() === '' || data.pageToLink === '') {
+      swal({
+        title: 'Warning',
+        text: 'Fill all mandatory fields',
+        icon: 'error',
+        button: 'Close',
+        dangerMode: true,
+      })
+      return
+    }
+    setLoading(true)
+    const formData = new FormData()
+    formData.append('_id', data.uniqId)
+    formData.append('menu_name', data.menuName)
+    formData.append('sub_menu_name', data.subMenuName.trim())
+    formData.append('linked_page', data.pageToLink)
+    axios
+      .patch(`${API}/api/menu/${id}`, formData, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/formdata',
+        },
+      })
+      .then((res) => {
+        swal({
+          title: 'Updated',
+          text: 'Menu Item updated successfully!',
+          icon: 'success',
+          button: 'Return',
+        })
+        setLoading(false)
+        navigate('/menu', { replace: true })
+      })
+      .catch((err) => {
+        setLoading(false)
+        swal({
+          title: 'Warning',
+          text: 'Something went wrong!',
+          icon: 'error',
+          button: 'Retry',
+          dangerMode: true,
+        })
+      })
+  }
 
   return (
     <div className="container">
@@ -153,8 +227,12 @@ const EditMenuItem = () => {
                   id="pageToLink"
                 >
                   <option value="">---select---</option>
-                  <option value="demoOne">Demo One</option>
-                  <option value="demoTwo">Demo Two</option>
+                  {pages !== [] &&
+                    pages.map((page, i) => (
+                      <option value={page._id} key={i}>
+                        {page.title}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="mb-3">
