@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
 import Button from '@material-ui/core/Button'
 import { Link, useNavigate } from 'react-router-dom'
 import swal from 'sweetalert'
 import axios from 'axios'
 import { API } from 'src/API'
 import { isAutheticated } from 'src/components/auth/authhelper'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
-const AddNewMenuItem = () => {
+const AddArticle = () => {
   const { token } = isAutheticated()
   const navigate = useNavigate()
   const [data, setData] = useState({
-    menuName: '',
-    subMenuName: '',
-    pageToLink: '',
+    title: '',
+    description: '',
+    category: '',
     uniqId: 'Loading',
     timestamp: new Date(),
   })
-  const [pages, setPages] = useState([])
+  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [limiter, setLimiter] = useState({
-    menuName: 50,
-    menuNameHas: 50,
-    subMenuName: 50,
-    subMenuNameHas: 50,
+    title: 100,
+    titleHas: 100,
   })
 
   const getNewId = () => {
     axios
-      .get(`${API}/api/menu/newid`, {
+      .get(`${API}/api/newsandevents/article/newid`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
@@ -39,27 +39,27 @@ const AddNewMenuItem = () => {
       .catch((err) => {})
   }
 
-  const getPages = () => {
+  const getCategories = () => {
     axios
-      .get(`${API}/api/addpage`, {
+      .get(`${API}/api/newsandevents/category`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        setPages([...res.data.data])
+        setCategories([...res.data.data])
       })
       .catch((err) => {})
   }
 
   useEffect(() => {
     getNewId()
-    getPages()
+    getCategories()
   }, [])
 
   const handleChange = (e) => {
-    if (e.target.type === 'text') {
+    if (e.target.id === 'title') {
       if (e.target.value.length === limiter[e.target.id] + 1) return
       setLimiter((prev) => ({
         ...prev,
@@ -70,7 +70,7 @@ const AddNewMenuItem = () => {
   }
 
   const handleSubmit = () => {
-    if (data.menuName.trim() === '' || data.pageToLink === '') {
+    if (data.title.trim() === '' || data.description === '' || data.category === '') {
       swal({
         title: 'Warning',
         text: 'Fill all mandatory fields',
@@ -83,12 +83,12 @@ const AddNewMenuItem = () => {
     setLoading(true)
     const formData = new FormData()
     formData.append('_id', data.uniqId)
-    formData.append('menu_name', data.menuName)
-    formData.append('sub_menu_name', data.subMenuName.trim())
-    formData.append('linked_page', data.pageToLink)
+    formData.append('article_title', data.title)
+    formData.append('description', data.description)
+    formData.append('category', data.category)
     formData.append('createdAt', data.timestamp)
     axios
-      .post(`${API}/api/menu`, formData, {
+      .post(`${API}/api/newsandevents/article`, formData, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
@@ -98,12 +98,12 @@ const AddNewMenuItem = () => {
       .then((res) => {
         swal({
           title: 'Added',
-          text: 'Menu Item added successfully!',
+          text: 'Article added successfully!',
           icon: 'success',
           button: 'Return',
         })
         setLoading(false)
-        navigate('/menu', { replace: true })
+        navigate('/newsandevents/articles', { replace: true })
       })
       .catch((err) => {
         setLoading(false)
@@ -130,7 +130,7 @@ const AddNewMenuItem = () => {
                   "
           >
             <div style={{ fontSize: '22px' }} className="fw-bold">
-              Add New Menu Item
+              Add Article
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <h4 className="mb-0"></h4>
@@ -151,7 +151,7 @@ const AddNewMenuItem = () => {
               >
                 {loading ? 'Loading' : 'Save'}
               </Button>
-              <Link to="/menu">
+              <Link to="/newsandevents/articles">
                 <Button
                   variant="contained"
                   color="secondary"
@@ -173,61 +173,66 @@ const AddNewMenuItem = () => {
           <div className="card h-100">
             <div className="card-body px-5">
               <div className="mb-3">
-                <label htmlFor="menuName" className="form-label">
-                  Menu Name*
+                <label htmlFor="title" className="form-label">
+                  Article Title*
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  id="menuName"
-                  value={data.menuName}
+                  id="title"
+                  value={data.title}
                   maxLength="50"
                   onChange={(e) => handleChange(e)}
                 />
-                <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.menuNameHas}</p>
+                <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
               </div>
-              <div className="mb-3">
-                <label htmlFor="subMenuName" className="form-label">
-                  Sub Menu Name (optional)
+              <div className="row mb-3">
+                <label htmlFor="categoryName" className="form-label">
+                  Description*
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subMenuName"
-                  value={data.subMenuName}
-                  maxLength="50"
-                  onChange={(e) => handleChange(e)}
-                />
-                <p className="pt-1 pl-2 text-secondary">
-                  Remaining words : {limiter.subMenuNameHas}
-                </p>
+                <div className="App">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data={data.description}
+                    onReady={(editor) => {
+                      // You can store the "editor" and use when it is needed.
+                      // console.log('Editor is ready to use!', editor)
+                      editor.editing.view.change((writer) => {
+                        writer.setStyle('height', '150px', editor.editing.view.document.getRoot())
+                      })
+                    }}
+                    onChange={(event, editor) => {
+                      let e = { target: { value: editor.getData(), id: 'description' } }
+                      handleChange(e)
+                    }}
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="pageToLink" className="form-label">
-                  Page To Link*
+                  Category*
                 </label>
                 <select
                   onChange={(e) => handleChange(e)}
-                  value={data.pageToLink}
+                  value={data.category}
                   className="form-control"
-                  id="pageToLink"
+                  id="category"
                 >
                   <option value="">---select---</option>
-                  {pages !== [] &&
-                    pages.map((page, i) => (
-                      <option value={page._id} key={i}>
-                        {page.title}
-                      </option>
-                    ))}
+                  {categories.map((c, i) => (
+                    <option key={i} value={c._id}>
+                      {c.category_name}
+                    </option>
+                  ))}
                 </select>
-              </div>
-              <div className="mb-3">
-                <label>Unique ID</label>
-                <input type="text" value={data.uniqId} className="form-control" disabled />
               </div>
               <div className="mb-3">
                 <label>TimeStamp</label>
                 <input type="text" value={data.timestamp} className="form-control" disabled />
+              </div>
+              <div className="mb-3">
+                <label>Unique ID</label>
+                <input type="text" value={data.uniqId} className="form-control" disabled />
               </div>
             </div>
           </div>
@@ -237,4 +242,4 @@ const AddNewMenuItem = () => {
   )
 }
 
-export default AddNewMenuItem
+export default AddArticle

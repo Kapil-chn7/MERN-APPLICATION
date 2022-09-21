@@ -22,6 +22,8 @@ import {
   cilCommand,
   cilMedicalCross,
   cilAppsSettings,
+  cilBullhorn,
+  cilStream,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -109,6 +111,26 @@ const _nav = [
     name: 'Menu',
     to: '/menu',
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+  },
+
+  {
+    component: CNavGroup,
+    name: 'News & Events',
+    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Articles',
+        icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+        to: '/newsandevents/articles',
+      },
+      {
+        component: CNavItem,
+        name: 'Categories',
+        icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
+        to: '/newsandevents/categories',
+      },
+    ],
   },
 
   {

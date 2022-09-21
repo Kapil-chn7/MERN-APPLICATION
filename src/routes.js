@@ -2,6 +2,10 @@ import React from 'react'
 import AddNewMenuItem from './views/menu/AddNewMenuItem'
 import EditMenuItem from './views/menu/EditMenuItem'
 import Menu from './views/menu/Menu'
+import AddArticle from './views/newsandevents/AddArticle'
+import AddCategory from './views/newsandevents/AddCategory'
+import Articles from './views/newsandevents/Articles'
+import Categories from './views/newsandevents/Categories'
 import AddPhoto from './views/photogallery/AddPhoto'
 import EditPhoto from './views/photogallery/EditPhoto'
 import PhotoGallery from './views/photogallery/PhotoGallery'
@@ -90,10 +94,16 @@ const routes = [
 
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
 
-  //settings menu
+  //menu
   { path: '/menu', name: 'Menu', element: Menu },
   { path: '/menu/add', name: 'Add New Menu Item', element: AddNewMenuItem },
   { path: '/menu/edit/:id', name: 'Edit Menu Item', element: EditMenuItem },
+
+  //news & events
+  { path: '/newsandevents/articles', name: 'Articles', element: Articles },
+  { path: '/newsandevents/articles/addarticle', name: 'Add Article', element: AddArticle },
+  { path: '/newsandevents/categories', name: 'Categories', element: Categories },
+  { path: '/newsandevents/categories/addcategory', name: 'Add Category', element: AddCategory },
 
   //photo gallery
   { path: '/photogallery', name: 'Photo Gallery', element: PhotoGallery },
