@@ -184,7 +184,17 @@ const Articles = () => {
                               <tr key={i}>
                                 <td className="text-start">{article.article_title}</td>
                                 <td className="text-start">{article.category?.category_name}</td>
-                                <td className="text-start">{article.status}</td>
+                                <td className="text-start">
+                                  {article.status === 'Saved as Draft' ? (
+                                    <span className="badge text-bg-info text-white">
+                                      {article.status}
+                                    </span>
+                                  ) : (
+                                    <span className="badge text-bg-success text-white">
+                                      {article.status}
+                                    </span>
+                                  )}
+                                </td>
                                 <td className="text-start">
                                   {article.published_on
                                     ? new Date(article.published_on).toLocaleString('en-GB', {
@@ -199,7 +209,7 @@ const Articles = () => {
                                     : '-'}
                                 </td>
                                 <td className="text-start">
-                                  <Link to={`/newsandevents/editarticle/${article._id}`}>
+                                  <Link to={`/newsandevents/articles/editarticle/${article._id}`}>
                                     <button
                                       style={{ color: 'white', margin: '0 1rem' }}
                                       type="button"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import Button from '@material-ui/core/Button'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import swal from 'sweetalert'
 import axios from 'axios'
 import { API } from 'src/API'
@@ -9,7 +9,8 @@ import { isAutheticated } from 'src/components/auth/authhelper'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import MyCustomUploadAdapterPlugin from './CustomUploadPlugin'
 
-const AddArticle = () => {
+const EditArticle = () => {
+  const id = useParams()?.id
   const { token } = isAutheticated()
   const navigate = useNavigate()
   const [data, setData] = useState({
@@ -26,16 +27,27 @@ const AddArticle = () => {
     titleHas: 100,
   })
 
-  const getNewId = () => {
+  const getArticle = () => {
     axios
-      .get(`${API}/api/newsandevents/article/newid`, {
+      .get(`${API}/api/newsandevents/article/${id}`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        setData((prev) => ({ ...prev, uniqId: res.data.data._id }))
+        setData((prev) => ({
+          ...prev,
+          uniqId: res.data.data._id,
+          timestamp: res.data.data.createdAt,
+          category: res.data.data.category,
+          description: res.data.data.description,
+          title: res.data.data.article_title,
+        }))
+        setLimiter((prev) => ({
+          ...prev,
+          titleHas: prev.title - res.data.data.article_title.length,
+        }))
       })
       .catch((err) => {})
   }
@@ -55,7 +67,7 @@ const AddArticle = () => {
   }
 
   useEffect(() => {
-    getNewId()
+    getArticle()
     getCategories()
   }, [])
 
@@ -70,7 +82,7 @@ const AddArticle = () => {
     setData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
   }
 
-  const handleSubmit = (type) => {
+  const handleSubmit = (type = 'Saved') => {
     if (data.title.trim() === '' || data.description === '' || data.category === '') {
       swal({
         title: 'Warning',
@@ -83,17 +95,15 @@ const AddArticle = () => {
     }
     setLoading(true)
     const formData = new FormData()
-    formData.append('_id', data.uniqId)
     formData.append('article_title', data.title)
     formData.append('description', data.description)
     formData.append('category', data.category)
-    formData.append('createdAt', data.timestamp)
     if (type === 'publish') {
       formData.append('status', 'Published')
       formData.append('published_on', data.timestamp)
     }
     axios
-      .post(`${API}/api/newsandevents/article`, formData, {
+      .patch(`${API}/api/newsandevents/article/${id}`, formData, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
@@ -103,7 +113,7 @@ const AddArticle = () => {
       .then((res) => {
         swal({
           title: 'Added',
-          text: 'Article added successfully!',
+          text: 'Article updated successfully!',
           icon: 'success',
           button: 'Return',
         })
@@ -135,7 +145,7 @@ const AddArticle = () => {
                   "
           >
             <div style={{ fontSize: '22px' }} className="fw-bold">
-              Add Article
+              Edit Article
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <h4 className="mb-0"></h4>
@@ -165,10 +175,10 @@ const AddArticle = () => {
                   textTransform: 'capitalize',
                   marginRight: '5px',
                 }}
-                onClick={() => handleSubmit('saveasdraft')}
+                onClick={() => handleSubmit()}
                 disabled={loading}
               >
-                {loading ? 'Loading' : 'Save as Draft'}
+                {loading ? 'Loading' : 'Update'}
               </Button>
               <Link to="/newsandevents/articles">
                 <Button
@@ -265,7 +275,12 @@ const AddArticle = () => {
               </div>
               <div className="mb-3">
                 <label>TimeStamp</label>
-                <input type="text" value={data.timestamp} className="form-control" disabled />
+                <input
+                  type="text"
+                  value={new Date(data.timestamp)}
+                  className="form-control"
+                  disabled
+                />
               </div>
               <div className="mb-3">
                 <label>Unique ID</label>
@@ -279,4 +294,4 @@ const AddArticle = () => {
   )
 }
 
-export default AddArticle
+export default EditArticle

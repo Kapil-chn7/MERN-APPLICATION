@@ -194,7 +194,9 @@ const Categories = () => {
                                 </td>
 
                                 <td className="text-start">
-                                  <Link to={`/newsandevents/editcategory/${category._id}`}>
+                                  <Link
+                                    to={`/newsandevents/categories/editcategory/${category._id}`}
+                                  >
                                     <button
                                       style={{ color: 'white', margin: '0 1rem' }}
                                       type="button"
