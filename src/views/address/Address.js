@@ -26,6 +26,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { makeStyles } from '@material-ui/core/styles'
 import './Address.css'
 import axios from 'axios'
+import { API } from '../../API'
 const Address = () => {
   const validEmailRegex = RegExp(
     /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
@@ -111,7 +112,7 @@ const Address = () => {
   const getUserAddress = (e) => {
     const { token } = JSON.parse(localStorage.getItem('auth'))
     axios
-      .get('https://api-spot-it.herokuapp.com/api/user', {
+      .get(`${API}/api/user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -119,7 +120,7 @@ const Address = () => {
       .then(({ data }) => {
         console.log('data', data.data)
         setLoading(false)
-        setAddress(data.data.address)
+        // setAddress(data.data.address)
       })
   }
   const handalSubmit = (e) => {
@@ -141,7 +142,7 @@ const Address = () => {
     console.log('token', token)
     axios
       .put(
-        'https://api-spot-it.herokuapp.com/api/user',
+        `${API}/api/user`,
         { address: address },
         {
           headers: {
@@ -150,7 +151,7 @@ const Address = () => {
         },
       )
       .then(({ data }) => {
-        alert( 'Address Updated successfully' )
+        alert('Address Updated successfully')
         console.log('data', data.data)
       })
   }
@@ -158,8 +159,8 @@ const Address = () => {
     getUserAddress()
   }, [])
   console.log('users', address)
-  if (Object.keys(address).length == 0) return null //for object
-  console.log('address', address)
+  // if (Object.keys(address).length == 0) return null //for object
+  // console.log('address', address)
   return (
     <>
       <div style={{ color: 'blue', fontSize: '20px', fontWeight: 'bold' }}>Address</div>

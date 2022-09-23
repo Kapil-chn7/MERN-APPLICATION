@@ -50,6 +50,27 @@ export default function AcccessibleTable() {
     }
   }
 
+  //this function converts createdAt string in ist
+  const getDatetime = (obj) => {
+    const date = new Date(obj.createdAt).toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+    var currentTime = new Date(obj.createdAt)
+    const time = '232'
+    var currentOffset = currentTime.getTimezoneOffset()
+
+    var ISTOffset = 330 // IST offset UTC +5:30
+
+    var ISTTime = new Date(currentTime.getTime() + (ISTOffset + currentOffset) * 60000)
+
+    // ISTTime now represents the time in IST coordinates
+
+    var hoursIST = ISTTime.getHours()
+    var minutesIST = ISTTime.getMinutes()
+    return <>{date + ' at ' + `${hoursIST}:${minutesIST}`}</>
+  }
   const updateContentFunction = () => {}
 
   useEffect(() => {
@@ -89,7 +110,7 @@ export default function AcccessibleTable() {
             <TableHead>
               <TableRow>
                 <TableCell align="left">Title</TableCell>
-                <TableCell align="center">Added On</TableCell>
+                <TableCell align="left">Added On</TableCell>
                 <TableCell align="left">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -97,14 +118,14 @@ export default function AcccessibleTable() {
               {tabledata.map((element) => {
                 return (
                   <TableRow key={element._id}>
-                    <TableCell component="th" scope="row">
+                    <TableCell align="left">
                       <Link to={`/view/page/${element.title}`} state={{ id: element._id }}>
                         {' '}
                         {element.title}
                       </Link>
                     </TableCell>
-                    <TableCell align="center">{element.createdAt}</TableCell>
-                    <TableCell align="center">
+                    <TableCell align="left">{getDatetime(element)}</TableCell>
+                    <TableCell align="left">
                       <Link
                         className="btn btn-primary btn-sm"
                         to={`/view/page/cmseditor/${element._id}`}
@@ -126,6 +147,31 @@ export default function AcccessibleTable() {
           </Table>
         </TableContainer>
       </div>
+
+      {/* <div className="row mt-3">
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="caption table">
+            <TableBody>
+              <TableRow>
+                <TableCell align="left">
+                  <Link to={`/view/page/hi`} state={{}}>
+                    {' '}
+                    {'Footer'}
+                  </Link>
+                </TableCell>
+                <TableCell align="left" style={{ paddingLeft: '110px' }}>
+                  {'2022-09-16T10:52:30.282Z'}
+                </TableCell>
+                <TableCell align="left" style={{ paddingRight: '60px' }}>
+                  <Link className="btn btn-primary btn-sm" to={`/view/page/cmseditor/Footer`}>
+                    Edit
+                  </Link>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div> */}
     </div>
   )
 }

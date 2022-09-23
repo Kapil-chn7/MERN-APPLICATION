@@ -49,9 +49,9 @@ const _nav = [
       },
       // {
       //   component: CNavItem,
-      //   name: 'Section 8',
+      //   name: 'Upload',
 
-      //   to: '/view/section8',
+      //   to: '/view/upload',
       // },
       // {
       //   component: CNavItem,
@@ -156,9 +156,9 @@ const _nav = [
 
   {
     component: CNavItem,
-    name: 'Sliders',
-    to: '/sliders',
-    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+    name: 'Donations',
+    to: '/view/donations',
+    icon: <CIcon icon={cilFilterPhoto} customClassName="nav-icon" />,
   },
 
   {
@@ -186,9 +186,9 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'About',
+        name: 'Copyright',
         icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
-        to: '/view/about',
+        to: '/view/copyright',
       },
     ],
   },
