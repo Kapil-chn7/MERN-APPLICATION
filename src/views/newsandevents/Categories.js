@@ -28,7 +28,6 @@ const Categories = () => {
         headers: { 'Access-Control-Allow-Origin': '*', Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        console.log(res.data.data)
         setCategoriesData(res.data.data)
         setLoading(false)
       })

@@ -7,7 +7,7 @@ import axios from 'axios'
 import { API } from 'src/API'
 import { isAutheticated } from 'src/components/auth/authhelper'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import MyCustomUploadAdapterPlugin from './CustomUploadPlugin'
+import MyCustomUploadAdapterPlugin from '../../assets/plugins/CustomUploadPlugin'
 
 const EditArticle = () => {
   const id = useParams()?.id
@@ -19,6 +19,7 @@ const EditArticle = () => {
     category: '',
     uniqId: 'Loading',
     timestamp: new Date(),
+    status: 'Save as Draft',
   })
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
@@ -28,6 +29,9 @@ const EditArticle = () => {
   })
 
   const getArticle = () => {
+    if (!id) {
+      navigate('/newsandevents/articles', { replace: true })
+    }
     axios
       .get(`${API}/api/newsandevents/article/${id}`, {
         headers: {
@@ -43,13 +47,22 @@ const EditArticle = () => {
           category: res.data.data.category,
           description: res.data.data.description,
           title: res.data.data.article_title,
+          status: res.data.data.status,
         }))
         setLimiter((prev) => ({
           ...prev,
           titleHas: prev.title - res.data.data.article_title.length,
         }))
       })
-      .catch((err) => {})
+      .catch((err) => {
+        navigate('/newsandevents/articles', { replace: true })
+        swal({
+          title: 'Article is not available',
+          icon: 'error',
+          button: 'Close',
+          dangerMode: true,
+        })
+      })
   }
 
   const getCategories = () => {
@@ -112,10 +125,10 @@ const EditArticle = () => {
       })
       .then((res) => {
         swal({
-          title: 'Added',
+          title: 'Updated',
           text: 'Article updated successfully!',
           icon: 'success',
-          button: 'Return',
+          button: 'Close',
         })
         setLoading(false)
         navigate('/newsandevents/articles', { replace: true })
@@ -162,9 +175,9 @@ const EditArticle = () => {
                   marginRight: '5px',
                 }}
                 onClick={() => handleSubmit('publish')}
-                disabled={loading}
+                disabled={loading || data.status === 'Published'}
               >
-                {loading ? 'Loading' : 'Publish'}
+                {loading ? 'Loading' : data.status === 'Published' ? 'Published' : 'Publish'}
               </Button>
               <Button
                 variant="contained"
@@ -178,7 +191,11 @@ const EditArticle = () => {
                 onClick={() => handleSubmit()}
                 disabled={loading}
               >
-                {loading ? 'Loading' : 'Update'}
+                {loading
+                  ? 'Loading'
+                  : data.status === 'Published'
+                  ? 'Save Changes'
+                  : 'Save as Draft'}
               </Button>
               <Link to="/newsandevents/articles">
                 <Button

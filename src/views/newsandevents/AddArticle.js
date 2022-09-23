@@ -7,7 +7,7 @@ import axios from 'axios'
 import { API } from 'src/API'
 import { isAutheticated } from 'src/components/auth/authhelper'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import MyCustomUploadAdapterPlugin from './CustomUploadPlugin'
+import MyCustomUploadAdapterPlugin from '../../assets/plugins/CustomUploadPlugin'
 
 const AddArticle = () => {
   const { token } = isAutheticated()
@@ -18,6 +18,8 @@ const AddArticle = () => {
     category: '',
     uniqId: 'Loading',
     timestamp: new Date(),
+    video: '',
+    videoURL: '',
   })
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
@@ -210,7 +212,6 @@ const AddArticle = () => {
                   Description*
                 </label>
                 <div className="App">
-                  <div id="editor"></div>
                   <CKEditor
                     editor={ClassicEditor}
                     data={data.description}

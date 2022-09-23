@@ -28,7 +28,6 @@ const Articles = () => {
         headers: { 'Access-Control-Allow-Origin': '*', Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        console.log(res.data.data)
         setArticlesData(res.data.data)
         setLoading(false)
       })

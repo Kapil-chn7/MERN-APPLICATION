@@ -82,10 +82,10 @@ const EditCategory = () => {
       })
       .then((res) => {
         swal({
-          title: 'Added',
+          title: 'Updated',
           text: 'Category updated successfully!',
           icon: 'success',
-          button: 'Return',
+          button: 'Close',
         })
         setLoading(false)
         navigate('/newsandevents/categories', { replace: true })
