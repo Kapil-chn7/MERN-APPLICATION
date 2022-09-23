@@ -248,22 +248,7 @@ const EditArticle = () => {
                     }}
                     config={{
                       extraPlugins: [MyCustomUploadAdapterPlugin],
-                      mediaEmbed: {
-                        extraProviders: [
-                          {
-                            name: 'allow-all',
-                            url: /^.+/,
-                            html: (match) =>
-                              '<div style="position:relative; width:100%; height:100%; top:0; left:0">' +
-                              '<video controls style="width:inherit; height:auto;">' +
-                              '<source src="' +
-                              match +
-                              '" type="video/mp4">' +
-                              '</video>' +
-                              '</div>',
-                          },
-                        ],
-                      },
+                      removePlugins: ['MediaEmbed'],
                     }}
                     onChange={(event, editor) => {
                       let e = { target: { value: editor.getData(), id: 'description' } }
