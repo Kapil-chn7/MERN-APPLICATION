@@ -1,8 +1,15 @@
 import React from 'react'
+import AddNewMenuItem from './views/menu/AddNewMenuItem'
+import EditMenuItem from './views/menu/EditMenuItem'
+import Menu from './views/menu/Menu'
 import AddPhoto from './views/photogallery/AddPhoto'
 import EditPhoto from './views/photogallery/EditPhoto'
 import PhotoGallery from './views/photogallery/PhotoGallery'
 import ViewPhoto from './views/photogallery/ViewPhoto'
+import AddSlide from './views/sliders/AddSlide'
+import EditSlide from './views/sliders/EditSlide'
+import Sliders from './views/sliders/Sliders'
+import ViewSlide from './views/sliders/ViewSlide'
 
 const ChangePassword = React.lazy(() => import('./views/pages/login/ChangePassword'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
@@ -93,10 +100,23 @@ const routes = [
   { path: '/', name: 'Home', exact: true },
 
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+
+  //settings menu
+  { path: '/menu', name: 'Menu', element: Menu },
+  { path: '/menu/add', name: 'Add New Menu Item', element: AddNewMenuItem },
+  { path: '/menu/edit/:id', name: 'Edit Menu Item', element: EditMenuItem },
+
+  //photo gallery
   { path: '/photogallery', name: 'Photo Gallery', element: PhotoGallery },
   { path: '/photogallery/addphoto', name: 'Add Photo', element: AddPhoto },
   { path: '/photogallery/editphoto/:id', name: 'Edit Photo', element: EditPhoto },
   { path: '/photogallery/viewphoto/:id', name: 'View Photo', element: ViewPhoto },
+
+  //sliders
+  { path: '/sliders', name: 'Sliders', element: Sliders },
+  { path: '/sliders/addslide', name: 'Add Slide', element: AddSlide },
+  { path: '/sliders/editslide/:id', name: 'Edit Slide', element: EditSlide },
+  { path: '/sliders/viewslide/:id', name: 'View Slide', element: ViewSlide },
 
   // properties
   { path: '/view/properties', name: 'ViewProperties', element: ViewProperties },
@@ -126,8 +146,6 @@ const routes = [
   { path: '/view/cms', name: 'Cms', element: Cms },
   { path: '/edit/cms/:id', name: 'EditCms', element: EditCms },
   { path: '/view/cms/:id', name: 'ViewSingleCMS', element: ViewSingleCMS },
-
-  //cms links
 
   //social media
   { path: '/view/socialmedia', name: 'SocialMedia', element: SocialMedia },
