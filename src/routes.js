@@ -50,16 +50,27 @@ const CmsEditor = React.lazy(() => import('./views/cmsLinks/pages/CmsEditor'))
 
 const AddPage = React.lazy(() => import('./views/cmsLinks/pages/AddPage'))
 
-//cms links
+//adding page for pdf video or images on cloudinary
 
-// const section8 = React.lazy(() => import('./views/cmsLinks/pages/Section8'))
-// const section80g = React.lazy(() => import('./views/cmsLinks/pages/Section80G'))
-// const ungcni = React.lazy(() => import('./views/cmsLinks/pages/UNGCNI'))
-// const nitiaayog = React.lazy(() => import('./views/cmsLinks/pages/NitiAyog'))
-// const tnc = React.lazy(() => import('./views/cmsLinks/pages/TnC'))
-// const privacy = React.lazy(() => import('./views/cmsLinks/pages/PrivacyPolicy'))
+const Addpvi = React.lazy(() => import('./views/cmsLinks/pages/Addvideopdf'))
+
+//footer edit page
+
+const Footeredit = React.lazy(() => import('./views/cmsLinks/pages/Footeredit.js'))
 
 const MainPage = React.lazy(() => import('./views/cmsLinks/pages/MainCmslinkpage.js'))
+
+//Donations
+
+const Donations = React.lazy(() => import('./views/donation/Donations'))
+
+//Copyright
+
+const copyright = React.lazy(() => import('./views/copyright/Copyright'))
+
+//view donations
+
+const viewdonation = React.lazy(() => import('./views/donation/Viewdonations'))
 
 //social media
 const SocialMedia = React.lazy(() => import('./views/socialmedia/SocialMedia'))
@@ -134,21 +145,25 @@ const routes = [
 
   { path: '/view/addpage', name: 'Add Page', element: AddPage },
 
+  { path: '/view/upload', name: 'Upload', element: Addpvi },
+
   //CmsEditor with id
   { path: '/view/page/cmseditor/:id', name: 'Editor', element: CmsEditor },
 
-  //cmslinks
-
-  // { path: '/view/section8', name: 'Section 8', element: section8 },
-  // { path: '/view/section80g', name: 'Section 80 G', element: section80g },
-  // { path: '/view/ungcni', name: 'UNGCNI', element: ungcni },
-  // { path: '/view/nitiaayog', name: 'Niti Aayog', element: nitiaayog },
-  // { path: '/view/tnc', name: 'Terms and Conditions', element: tnc },
-  // { path: '/view/privacy', name: 'Privacy Policy', element: privacy },
+  { path: '/view/page/cmseditor/Footer', name: 'Footer', element: Footeredit },
 
   //this is main page for cmslinks
 
   { path: '/view/page/:id', name: 'Links', element: MainPage },
+
+  //donations
+
+  { path: '/view/donations', name: 'Donations', element: Donations },
+
+  { path: '/view/donations/viewdonations', name: 'View Donations', element: viewdonation },
+
+  //copyright
+  { path: '/view/copyright', name: 'Copyright', element: copyright },
 
   // //About Page
   // { path: '/view/about', name: 'About', element: About },
