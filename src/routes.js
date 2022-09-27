@@ -94,6 +94,10 @@ const Logos = React.lazy(() => import('./views/logos/Logos'))
 
 const About = React.lazy(() => import('./views/about/About'))
 
+//news and events
+
+const newsandevent = React.lazy(() => import('./views/newsandevents/NewsandEvents'))
+
 const routes = [
   // { path: '/', exact: true, name: 'Login', element: Login },
   { path: '/changepassword', name: 'ChangePassword', element: ChangePassword },
@@ -183,6 +187,9 @@ const routes = [
   //copyright
   { path: '/view/copyright', name: 'Copyright', element: copyright },
 
+  //news and Events
+
+  { path: '/newsandevents', name: 'NewsandEvents', element: newsandevent },
   // //About Page
   // { path: '/view/about', name: 'About', element: About },
 ]

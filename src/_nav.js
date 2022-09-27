@@ -131,6 +131,12 @@ const _nav = [
     to: '/photogallery',
     icon: <CIcon icon={cilFilterPhoto} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'News & Events',
+    to: '/newsandevents',
+    icon: <CIcon icon={cilFilterPhoto} customClassName="nav-icon" />,
+  },
 
   {
     component: CNavItem,

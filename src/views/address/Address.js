@@ -141,15 +141,11 @@ const Address = () => {
     const { token } = JSON.parse(localStorage.getItem('auth'))
     console.log('token', token)
     axios
-      .put(
-        `${API}/api/user`,
-        { address: address },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      .put(`${API}/api/companyaddress`, address, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
+      })
       .then(({ data }) => {
         alert('Address Updated successfully')
         console.log('data', data.data)
