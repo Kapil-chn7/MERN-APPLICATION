@@ -1,61 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import swal from 'sweetalert'
 import axios from 'axios'
 import { API } from 'src/API'
 import { isAutheticated } from 'src/components/auth/authhelper'
 
-const AddNewMenuItem = () => {
+const EditCategory = () => {
+  const id = useParams()?.id
   const { token } = isAutheticated()
   const navigate = useNavigate()
   const [data, setData] = useState({
-    menuName: '',
-    subMenuName: '',
-    pageToLink: '',
+    categoryName: '',
     uniqId: 'Loading',
     timestamp: new Date(),
   })
-  const [pages, setPages] = useState([])
   const [loading, setLoading] = useState(false)
   const [limiter, setLimiter] = useState({
-    menuName: 50,
-    menuNameHas: 50,
-    subMenuName: 50,
-    subMenuNameHas: 50,
+    categoryName: 50,
+    categoryNameHas: 50,
   })
 
-  const getNewId = () => {
+  const getCategory = () => {
+    if (!id) {
+      navigate('/newsandevents/categories', { replace: true })
+    }
     axios
-      .get(`${API}/api/menu/newid`, {
+      .get(`${API}/api/newsandevents/category/${id}`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        setData((prev) => ({ ...prev, uniqId: res.data.data._id }))
-      })
-      .catch((err) => {})
-  }
-
-  const getPages = () => {
-    axios
-      .get(`${API}/api/addpage`, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        setPages([...res.data.data])
+        setData((prev) => ({
+          ...prev,
+          uniqId: res.data.data._id,
+          categoryName: res.data.data.category_name,
+          timestamp: res.data.data.createdAt,
+        }))
       })
       .catch((err) => {})
   }
 
   useEffect(() => {
-    getNewId()
-    getPages()
+    getCategory()
   }, [])
 
   const handleChange = (e) => {
@@ -70,7 +59,7 @@ const AddNewMenuItem = () => {
   }
 
   const handleSubmit = () => {
-    if (data.menuName.trim() === '' || data.pageToLink === '') {
+    if (data.categoryName.trim() === '') {
       swal({
         title: 'Warning',
         text: 'Fill all mandatory fields',
@@ -82,13 +71,9 @@ const AddNewMenuItem = () => {
     }
     setLoading(true)
     const formData = new FormData()
-    formData.append('_id', data.uniqId)
-    formData.append('menu_name', data.menuName)
-    formData.append('sub_menu_name', data.subMenuName.trim())
-    formData.append('linked_page', data.pageToLink)
-    formData.append('createdAt', data.timestamp)
+    formData.append('category_name', data.categoryName)
     axios
-      .post(`${API}/api/menu`, formData, {
+      .patch(`${API}/api/newsandevents/category/${id}`, formData, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token}`,
@@ -97,13 +82,13 @@ const AddNewMenuItem = () => {
       })
       .then((res) => {
         swal({
-          title: 'Added',
-          text: 'Menu Item added successfully!',
+          title: 'Updated',
+          text: 'Category updated successfully!',
           icon: 'success',
-          button: 'Return',
+          button: 'Close',
         })
         setLoading(false)
-        navigate('/menu', { replace: true })
+        navigate('/newsandevents/categories', { replace: true })
       })
       .catch((err) => {
         setLoading(false)
@@ -130,7 +115,7 @@ const AddNewMenuItem = () => {
                   "
           >
             <div style={{ fontSize: '22px' }} className="fw-bold">
-              Add New Menu Item
+              Edit Category
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <h4 className="mb-0"></h4>
@@ -149,9 +134,9 @@ const AddNewMenuItem = () => {
                 onClick={() => handleSubmit()}
                 disabled={loading}
               >
-                {loading ? 'Loading' : 'Save'}
+                {loading ? 'Loading' : 'Update'}
               </Button>
-              <Link to="/menu">
+              <Link to="/newsandevents/categories">
                 <Button
                   variant="contained"
                   color="secondary"
@@ -173,53 +158,20 @@ const AddNewMenuItem = () => {
           <div className="card h-100">
             <div className="card-body px-5">
               <div className="mb-3">
-                <label htmlFor="menuName" className="form-label">
-                  Menu Name*
+                <label htmlFor="categoryName" className="form-label">
+                  Category Name*
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  id="menuName"
-                  value={data.menuName}
-                  maxLength="50"
-                  onChange={(e) => handleChange(e)}
-                />
-                <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.menuNameHas}</p>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="subMenuName" className="form-label">
-                  Sub Menu Name (optional)
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="subMenuName"
-                  value={data.subMenuName}
+                  id="categoryName"
+                  value={data.categoryName}
                   maxLength="50"
                   onChange={(e) => handleChange(e)}
                 />
                 <p className="pt-1 pl-2 text-secondary">
-                  Remaining words : {limiter.subMenuNameHas}
+                  Remaining words : {limiter.categoryNameHas}
                 </p>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="pageToLink" className="form-label">
-                  Page To Link*
-                </label>
-                <select
-                  onChange={(e) => handleChange(e)}
-                  value={data.pageToLink}
-                  className="form-control"
-                  id="pageToLink"
-                >
-                  <option value="">---select---</option>
-                  {pages !== [] &&
-                    pages.map((page, i) => (
-                      <option value={page._id} key={i}>
-                        {page.title}
-                      </option>
-                    ))}
-                </select>
               </div>
               <div className="mb-3">
                 <label>Unique ID</label>
@@ -227,7 +179,12 @@ const AddNewMenuItem = () => {
               </div>
               <div className="mb-3">
                 <label>TimeStamp</label>
-                <input type="text" value={data.timestamp} className="form-control" disabled />
+                <input
+                  type="text"
+                  value={new Date(data.timestamp)}
+                  className="form-control"
+                  disabled
+                />
               </div>
             </div>
           </div>
@@ -237,4 +194,4 @@ const AddNewMenuItem = () => {
   )
 }
 
-export default AddNewMenuItem
+export default EditCategory
