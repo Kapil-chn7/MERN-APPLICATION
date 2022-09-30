@@ -104,6 +104,9 @@ const About = React.lazy(() => import('./views/about/About'))
 
 const newsandevent = React.lazy(() => import('./views/newsandevents/NewsandEvents'))
 
+//newsletters
+const newsletters = React.lazy(() => import('./views/newslettsuscribers/Newslettersus'))
+
 const routes = [
   // { path: '/', exact: true, name: 'Login', element: Login },
   { path: '/changepassword', name: 'ChangePassword', element: ChangePassword },
@@ -210,6 +213,13 @@ const routes = [
   { path: '/newsandevents', name: 'NewsandEvents', element: newsandevent },
   // //About Page
   // { path: '/view/about', name: 'About', element: About },
+
+  //news letters
+  {
+    path: '/newslettersuscribers',
+    name: 'Suscribers',
+    element: newsletters,
+  },
 ]
 
 export default routes

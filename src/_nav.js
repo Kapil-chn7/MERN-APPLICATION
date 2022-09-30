@@ -135,6 +135,12 @@ const _nav = [
 
   {
     component: CNavItem,
+    name: 'Slider',
+    icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
+    to: '/sliders',
+  },
+  {
+    component: CNavItem,
     name: 'Staff ',
     to: '/view/staff',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
@@ -155,8 +161,8 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'News & Events',
-    to: '/newsandevents',
+    name: 'Suscribed Users',
+    to: '/newslettersuscribers',
     icon: <CIcon icon={cilFilterPhoto} customClassName="nav-icon" />,
   },
 
