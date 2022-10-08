@@ -139,6 +139,14 @@ const _nav = [
     icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
     to: '/sliders',
   },
+
+  ,
+  {
+    component: CNavItem,
+    name: 'Get Involved Data',
+    icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
+    to: '/getinvolved',
+  },
   {
     component: CNavItem,
     name: 'Staff ',

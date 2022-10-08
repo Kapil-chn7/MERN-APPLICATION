@@ -1,4 +1,5 @@
 import React from 'react'
+import Getinvolved from './views/getinvolved/getinvolved'
 import AddNewMenuItem from './views/menu/AddNewMenuItem'
 import EditMenuItem from './views/menu/EditMenuItem'
 import Menu from './views/menu/Menu'
@@ -106,6 +107,10 @@ const newsandevent = React.lazy(() => import('./views/newsandevents/NewsandEvent
 
 //newsletters
 const newsletters = React.lazy(() => import('./views/newslettsuscribers/Newslettersus'))
+
+//get involved section
+const getinvolved = React.lazy(() => import('./views/getinvolved/getinvolved.js'))
+const viewgetinvolved = React.lazy(() => import('./views/getinvolved/viewgetinvolved'))
 
 const routes = [
   // { path: '/', exact: true, name: 'Login', element: Login },
@@ -219,6 +224,17 @@ const routes = [
     path: '/newslettersuscribers',
     name: 'Suscribers',
     element: newsletters,
+  },
+  {
+    path: '/getinvolved',
+    name: 'Get Involved',
+    element: getinvolved,
+  },
+
+  {
+    path: '/view/getinvolved/:category',
+    name: 'View',
+    element: viewgetinvolved,
   },
 ]
 

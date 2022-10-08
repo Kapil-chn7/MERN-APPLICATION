@@ -15,17 +15,21 @@ import { isAutheticated } from '../../../components/auth/authhelper'
 export default function AcccessibleTable() {
   const [tabledata, updatetabledata] = useState([])
   const { token } = isAutheticated()
+  const [loading, disableLoading] = useState(false)
 
   //this function gets the table data from database
   async function getTabledata() {
+    disableLoading(true)
     axios
       .get(`${API}/api/addpage`)
       .then((resp) => {
         console.log('this is the response', resp.data.data)
         updatetabledata(resp.data.data)
+        disableLoading(false)
       })
       .catch((err) => {
         console.log('thsi is the error ', err)
+        disableLoading(true)
       })
   }
 
@@ -75,6 +79,7 @@ export default function AcccessibleTable() {
 
   useEffect(() => {
     //this call is to get all the page content in the table data state
+
     getTabledata()
   }, [])
   return (
@@ -115,34 +120,43 @@ export default function AcccessibleTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tabledata.map((element) => {
-                return (
-                  <TableRow key={element._id}>
-                    <TableCell align="left">
-                      <Link to={`/view/page/${element.title}`} state={{ id: element._id }}>
-                        {' '}
+              {loading ? (
+                <TableRow align="center">
+                  <TableCell>Loading...</TableCell>
+                </TableRow>
+              ) : (
+                tabledata.map((element) => {
+                  return (
+                    <TableRow key={element._id}>
+                      <TableCell align="left">
+                        {/* <Link to={`/view/page/${element.title}`} state={{ id: element._id }}>
+                          {' '}
+                          {element.title}
+                        </Link> */}
+
+                        {/* comment this is want to see href of links title */}
                         {element.title}
-                      </Link>
-                    </TableCell>
-                    <TableCell align="left">{getDatetime(element)}</TableCell>
-                    <TableCell align="left">
-                      <Link
-                        className="btn btn-primary btn-sm"
-                        to={`/view/page/cmseditor/${element._id}`}
-                      >
-                        Edit
-                      </Link>
-                      &nbsp;
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => deleteFunction(element._id)}
-                      >
-                        Delete
-                      </button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
+                      </TableCell>
+                      <TableCell align="left">{getDatetime(element)}</TableCell>
+                      <TableCell align="left">
+                        <Link
+                          className="btn btn-primary btn-sm"
+                          to={`/view/page/cmseditor/${element._id}`}
+                        >
+                          Edit
+                        </Link>
+                        &nbsp;
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => deleteFunction(element._id)}
+                        >
+                          Delete
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              )}
             </TableBody>
           </Table>
         </TableContainer>
