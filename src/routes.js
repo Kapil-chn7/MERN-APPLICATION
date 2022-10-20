@@ -112,6 +112,7 @@ const newsletters = React.lazy(() => import('./views/newslettsuscribers/Newslett
 const getinvolved = React.lazy(() => import('./views/getinvolved/getinvolved.js'))
 const viewgetinvolved = React.lazy(() => import('./views/getinvolved/viewgetinvolved'))
 
+const EditorDelete = React.lazy(() => import('./views/cmsLinks/pages/EditorDelete'))
 const routes = [
   // { path: '/', exact: true, name: 'Login', element: Login },
   { path: '/changepassword', name: 'ChangePassword', element: ChangePassword },
@@ -235,6 +236,12 @@ const routes = [
     path: '/view/getinvolved/:category',
     name: 'View',
     element: viewgetinvolved,
+  },
+
+  {
+    path: '/view/page/editpage/:id',
+    name: 'Edit Page',
+    element: EditorDelete,
   },
 ]
 

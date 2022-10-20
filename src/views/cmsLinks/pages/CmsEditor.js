@@ -32,12 +32,9 @@ export default function CmsEditor() {
     console.log('this is the state of ckeditor data ', ckeditorData)
   }
   const changefun = (e) => {
-    console.log('this is the fun', e.target.files[0])
-
     updateditorData({ ...ckeditorData, file: e.target.files[0] })
   }
   const updateData = async () => {
-    console.log('inside of it', location.pathname.substring(21), ckeditorData)
     const newForm = new FormData()
     newForm.append('title', ckeditorData.title)
 

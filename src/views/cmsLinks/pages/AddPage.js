@@ -215,6 +215,7 @@ export default function AddPage() {
             })
           })
       }
+    } else if (e == '4') {
     }
   }
 
@@ -430,6 +431,68 @@ export default function AddPage() {
             </div>
           </div>
         )
+
+      case '4':
+        return (
+          <div>
+            <div
+              className="row mt-3"
+              // style={style1}
+            >
+              {/* <div className="input-group mb-3">
+                <span className="input-group-text" id="inputGroup-sizing-default">
+                  Title
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="title"
+                  value={dataObj.title}
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default"
+                  onChange={(e) => {
+                    changeData(e)
+                  }}
+                  required
+                />
+              </div> */}
+            </div>
+
+            <div className="row mt-3">
+              <div className="App">
+                <CKEditor
+                  editor={ClassicEditor}
+                  config={{
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+                    removePlugins: ['MediaEmbed'],
+                  }}
+                  onReady={(editor) => {
+                    // You can store the "editor" and use when it is needed.
+                    // console.log("Editor is ready to use!", editor);
+                    editor.editing.view.change((writer) => {
+                      writer.setStyle('height', '200px', editor.editing.view.document.getRoot())
+                    })
+                  }}
+                  data={dataObj.updateditorData}
+                  // onReady={(editor) => {
+                  //   // You can store the "editor" and use when it is needed.
+                  //   // console.log('Editor is ready to use!', editor)
+                  // }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData()
+                    ckeditordataupdate(data)
+                  }}
+                  onBlur={(event, editor) => {
+                    //   console.log('Blur.', editor)
+                  }}
+                  onFocus={(event, editor) => {
+                    //   console.log('Focus.', editor)
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )
     }
   }
 
@@ -450,6 +513,7 @@ export default function AddPage() {
                 <option value="1">Footer</option>
                 <option value="2">What do we do</option>
                 <option value="3">Our Partners</option>
+                <option value="4">About Us</option>
                 {/* <option value="3"></option> */}
               </select>
             </div>
