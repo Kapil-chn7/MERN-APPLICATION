@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert'
 
@@ -26,136 +26,162 @@ import FormGroup from '@material-ui/core/FormGroup'
 import Checkbox from '@material-ui/core/Checkbox'
 
 import { makeStyles } from '@material-ui/core/styles'
-import './SocialMedia.css';
+import './SocialMedia.css'
+import { API } from '../../API'
 const SocialMedia = () => {
-  const [socialLink, setSocialLink] = useState({})
-  const [errors, setErrors] = useState({
-    facebookError: '',
-    tweeterError: '',
-    instagramError: '',
-    linkedinError: '',
+  const [socialLink, setSocialLink] = useState({
+    facebook: '',
+    youtube: '',
+    twitter: '',
+    whatsapp: '',
+    telegram: '',
+    gmail: '',
   })
+  const [id, updateId] = useState('')
+
   const handleChange = (e) => {
-    const { name, value } = e.target
-    switch (name) {
-      case 'facebook':
-        setErrors((errors) => ({
-          ...errors,
-          facebookError: value ? '' : 'Please enter valid facebook url',
-        }))
-        break
-      case 'twitter':
-        setErrors((errors) => ({
-          ...errors,
-          tweeterError: value ? '' : 'Please enter valid tweeter url',
-        }))
-        break
-      case 'instagram':
-        setErrors((errors) => ({
-          ...errors,
-          instagramError: value ? '' : 'Please enter valid instagram url',
-        }))
-        break
-      case 'linkedIn':
-        setErrors((errors) => ({
-          ...errors,
-          linkedinError: value ? '' : 'Please enter valid linkedIn url',
-        }))
-        break
-      default:
-        break
-    }
-
-    setSocialLink({ ...socialLink, [name]: value })
+    setSocialLink({ ...socialLink, [e.name]: e.value })
   }
-
-  const getUserSocialLink =  (e) => {
-    const { token } = JSON.parse(localStorage.getItem('auth'))
-     axios.get('https://api-spot-it.herokuapp.com/api/user', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then(({data})=>{
-      console.log("data",data.data.socialMediaLinks)
-      setSocialLink(data.data.socialMediaLinks)
-
-    })
-  }
-  const handalSubmit = (e) => {
-    if (
-      !socialLink.facebook ||
-      !socialLink.twitter ||
-      !socialLink.instagram ||
-      !socialLink.linkedIn
-    
-    ) {
-      return swal('Error!', 'All fields are required', errors)
-    }
-    console.log('hadelsubmit called', socialLink)
-    const { token } = JSON.parse(localStorage.getItem('auth'))
-    console.log('token', token)
-    axios
-      .put(
-        'https://api-spot-it.herokuapp.com/api/user',
-        { socialLink: socialLink },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then(({ data }) => {
-        alert( 'Link Added successfully' )
-
-        console.log('data', data.data)
+  const handalSubmit = async () => {
+    // console.log('these are the links', socialLink);
+    await axios
+      .patch(`${API}/api/addsocialmedia`, { data: socialLink, id: id })
+      .then(() => {
+        swal({
+          title: 'Success',
+          text: 'Successfully changed the URLs',
+          icon: 'success',
+          button: 'Return',
+        })
+      })
+      .catch(() => {
+        swal({
+          title: 'Server Error',
+          text: 'Please try again later',
+          icon: 'warning',
+          button: 'Return',
+        })
       })
   }
   useEffect(() => {
-    getUserSocialLink()
-
+    axios
+      .get(`${API}/api/addsocialmedia`)
+      .then((resp) => {
+        updateId(resp.data.data[0]._id)
+        console.log('this is the resp', resp.data.data[0])
+        setSocialLink({ ...resp.data.data[0] })
+      })
+      .catch((err) => {
+        updateId('6332dad285d0af0016e55b7e')
+        console.log('thsi is the error ', err)
+      })
   }, [])
-console.log("social link",socialLink)
+  console.log('social link', socialLink)
   return (
     <>
-        <div style={{color:"blue",fontSize:"20px",fontWeight:"bold"}}>Social Media</div>
+      <div style={{ color: 'blue', fontSize: '20px', fontWeight: 'bold' }}>Social Media</div>
 
-    <div className='row sub-heading-wrapper'>
-    <div className='heading-social'>Social Media</div>
+      <div className="row sub-heading-wrapper">
+        <div className="heading-social">Social Media</div>
 
-        <div className='col-md-6'>
-        <div className="d-flex mt-3">
-        Facebook <div style={{ color: 'red' }}> *</div>
+        <div className="col-md-6">
+          <div className="d-flex mt-3">
+            Facebook <div style={{ color: 'red' }}> *</div>
           </div>{' '}
-        <input value={socialLink.facebook}  onChange={handleChange} name="facebook" className='mt-2' style={{width:"100%",padding:"5px",borderRadius:"4px"}} type="text"></input>
-        <p className="text-center py-2 text-danger">{errors.facebookError}</p>
-
-        <div className="d-flex mt-3">
-        Twitter <div style={{ color: 'red' }}> *</div>
+          <input
+            name="facebook"
+            value={socialLink.facebook}
+            onChange={(e) => {
+              handleChange({ name: e.target.name, value: e.target.value })
+            }}
+            className="mt-2"
+            style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
+            type="text"
+          ></input>
+          <div className="d-flex mt-3">
+            Twitter <div style={{ color: 'red' }}> *</div>
           </div>{' '}
-        <input value={socialLink.twitter}  onChange={handleChange} name="twitter" style={{width:"100%",padding:"5px",borderRadius:"4px"}} type="text"></input>
-        <p className="text-center py-2 text-danger">{errors.tweeterError}</p>
-
-        <div className="d-flex mt-3">
-        Instagram <div style={{ color: 'red' }}> *</div>
+          <input
+            value={socialLink.twitter}
+            name="twitter"
+            onChange={(e) => {
+              handleChange({ name: e.target.name, value: e.target.value })
+            }}
+            style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
+            type="text"
+          ></input>
+          <div className="d-flex mt-3">
+            YouTube <div style={{ color: 'red' }}> *</div>
           </div>{' '}
-        <input value={socialLink.instagram}  onChange={handleChange} name="instagram" className='mt-2' style={{width:"100%",padding:"5px",borderRadius:"4px"}} type="text"></input>
-        <p className="text-center py-2 text-danger">{errors.instagramError}</p>
-
-        <div className="d-flex mt-3">
-        Linkedin <div style={{ color: 'red' }}> *</div>
+          <input
+            value={socialLink.youtube}
+            onChange={(e) => {
+              handleChange({ name: e.target.name, value: e.target.value })
+            }}
+            name="youtube"
+            className="mt-2"
+            style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
+            type="text"
+          ></input>
+          <div className="d-flex mt-3">
+            Gmail <div style={{ color: 'red' }}> *</div>
           </div>{' '}
-        <input value={socialLink.linkedIn}  onChange={handleChange} name="linkedIn" className='mt-2' style={{width:"100%",padding:"5px",borderRadius:"4px"}} type="text"></input>
-        <p className="text-center py-2 text-danger">{errors.linkedinError}</p>
-
+          <input
+            value={socialLink.gmail}
+            onChange={(e) => {
+              handleChange({ name: e.target.name, value: e.target.value })
+            }}
+            name="gmail"
+            className="mt-2"
+            style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
+            type="text"
+          ></input>
+          <div className="d-flex mt-3">
+            Whatsapp <div style={{ color: 'red' }}> *</div>
+          </div>{' '}
+          <input
+            value={socialLink.whatsapp}
+            onChange={(e) => {
+              handleChange({ name: e.target.name, value: e.target.value })
+            }}
+            name="whatsapp"
+            className="mt-2"
+            style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
+            type="text"
+          ></input>
+          <div className="d-flex mt-3">
+            Telegram <div style={{ color: 'red' }}> *</div>
+          </div>{' '}
+          <input
+            value={socialLink.telegram}
+            onChange={(e) => {
+              handleChange({ name: e.target.name, value: e.target.value })
+            }}
+            name="telegram"
+            className="mt-2"
+            style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
+            type="text"
+          ></input>
         </div>
-   
-    <div className='d-flex mt-3'>
-        <button   onClick={(e) => handalSubmit(e)} style={{color:"white"}} className='btn btn-warning'>Save</button>
-        <button style={{marginLeft:"15px"}}>cancel</button>
-    </div>
-    </div>
-    
+
+        <div className="d-flex mt-3">
+          <button
+            onClick={(e) => handalSubmit()}
+            style={{ color: 'white' }}
+            className="btn btn-warning"
+          >
+            Edit
+          </button>
+          <button
+            style={{ marginLeft: '15px' }}
+            onClick={() => {
+              window.location.reload()
+            }}
+          >
+            cancel
+          </button>
+        </div>
+      </div>
     </>
   )
 }
