@@ -132,6 +132,12 @@ const _nav = [
       },
     ],
   },
+  {
+    component: CNavItem,
+    name: 'Banner Images',
+    to: '/view/bannerimages',
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+  },
 
   {
     component: CNavItem,

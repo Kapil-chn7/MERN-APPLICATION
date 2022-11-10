@@ -113,6 +113,7 @@ const getinvolved = React.lazy(() => import('./views/getinvolved/getinvolved.js'
 const viewgetinvolved = React.lazy(() => import('./views/getinvolved/viewgetinvolved'))
 
 const EditorDelete = React.lazy(() => import('./views/cmsLinks/pages/EditorDelete'))
+const Bannerimages = React.lazy(() => import('./views/bannerimages/Bannerimages'))
 const routes = [
   // { path: '/', exact: true, name: 'Login', element: Login },
   { path: '/changepassword', name: 'ChangePassword', element: ChangePassword },
@@ -242,6 +243,11 @@ const routes = [
     path: '/view/page/editpage/:id',
     name: 'Edit Page',
     element: EditorDelete,
+  },
+  {
+    path: '/view/bannerimages',
+    name: 'Banner images',
+    element: Bannerimages,
   },
 ]
 
