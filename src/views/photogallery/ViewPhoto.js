@@ -12,10 +12,11 @@ const ViewPhoto = () => {
   const navigate = useNavigate()
   const [data, setData] = useState({
     title: '',
-    imageURL: '',
-    imageFile: '',
-    imagePublicId: '',
+    image: '',
+    description: '',
+    filesData: [],
   })
+
   const [loading, setLoading] = useState(false)
 
   const getPhotoData = () => {
@@ -31,11 +32,13 @@ const ViewPhoto = () => {
         },
       })
       .then((res) => {
+        console.log('this is the reponse ', res.data.data.description)
         setData((prev) => ({
           ...prev,
           title: res.data.data.title,
-          imageURL: res.data.data.image.url,
-          imagePublicId: res.data.data.image.public_id,
+          image: res.data.data.image,
+          description: res.data.data.description,
+          filesData: [...res.data.data.filesData],
         }))
       })
   }
@@ -105,7 +108,31 @@ const ViewPhoto = () => {
             </div>
             <div className="mb-3">
               <h4 className="form-label">Photo : </h4>
-              <img src={data?.imageURL} alt="" width="600" />
+              <img src={data?.image} alt="" width="600" />
+            </div>
+            <div className="mb-3">
+              <h4 className="form-label">Description : </h4>
+
+              <h5>{data?.description}</h5>
+            </div>
+            <div className="row">
+              {data.filesData.map((e, i) => {
+                console.log('thsi is e ', e, i)
+
+                if (Object.keys(e)[0] === 'image') {
+                  return (
+                    <div className="col mb-3" key={i}>
+                      <img src={e['image']} style={{ height: '300px', width: '300px' }} alt="" />
+                    </div>
+                  )
+                } else {
+                  return (
+                    <div className="col mb-3" key={i}>
+                      <video src={e['video']} width="300px" height="300px" controls></video>
+                    </div>
+                  )
+                }
+              })}
             </div>
           </div>
         </div>

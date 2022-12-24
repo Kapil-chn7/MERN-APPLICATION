@@ -183,7 +183,7 @@ const PhotoGallery = () => {
                                 <td className="text-center">{photo.title}</td>
                                 <td className="text-center">
                                   <img
-                                    src={photo.image.url}
+                                    src={photo.image}
                                     alt={photo.title}
                                     width="150"
                                     height="80"

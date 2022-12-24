@@ -186,6 +186,12 @@ const _nav = [
     to: '/view/donations',
     icon: <CIcon icon={cilFilterPhoto} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: 'Maps',
+    icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
+    to: '/view/maps',
+  },
 
   {
     component: CNavGroup,

@@ -114,6 +114,14 @@ const viewgetinvolved = React.lazy(() => import('./views/getinvolved/viewgetinvo
 
 const EditorDelete = React.lazy(() => import('./views/cmsLinks/pages/EditorDelete'))
 const Bannerimages = React.lazy(() => import('./views/bannerimages/Bannerimages'))
+
+//maps section
+
+const Maps = React.lazy(() => import('./views/maps/Map'))
+const Addmaps = React.lazy(() => import('./views/maps/Addmap'))
+const Viewmap = React.lazy(() => import('./views/maps/Viewmap'))
+const Editmap = React.lazy(() => import('./views/maps/Editmap'))
+
 const routes = [
   // { path: '/', exact: true, name: 'Login', element: Login },
   { path: '/changepassword', name: 'ChangePassword', element: ChangePassword },
@@ -248,6 +256,28 @@ const routes = [
     path: '/view/bannerimages',
     name: 'Banner images',
     element: Bannerimages,
+  },
+
+  //maps
+  {
+    path: '/view/maps',
+    name: 'Maps Section',
+    element: Maps,
+  },
+  {
+    path: '/view/maps/addmaps',
+    name: 'Add maps',
+    element: Addmaps,
+  },
+  {
+    path: '/view/maps/viewmap',
+    name: 'View Map',
+    element: Viewmap,
+  },
+  {
+    path: '/view/maps/editmap',
+    name: 'Edit Map',
+    element: Editmap,
   },
 ]
 

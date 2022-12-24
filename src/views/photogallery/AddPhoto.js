@@ -13,6 +13,8 @@ const AddPhoto = () => {
     title: '',
     imageURL: '',
     imageFile: '',
+    filesData: [],
+    description: '',
   })
   const [loading, setLoading] = useState(false)
   const [limiter, setLimiter] = useState({ title: 50, titleHas: 50 })
@@ -49,6 +51,11 @@ const AddPhoto = () => {
         }))
         e.target.value = null
       }
+    } else if (e.target.id === 'textarea80words') {
+      setData({ ...data, description: e.target.value })
+    } else if (e.target.id === 'filesData') {
+      console.log('event multiple files', e.target.files)
+      setData((prev) => ({ ...prev, filesData: [...e.target.files] }))
     }
   }
 
@@ -56,7 +63,7 @@ const AddPhoto = () => {
     if (data.title.trim() === '' || data.imageURL.trim() === '') {
       swal({
         title: 'Warning',
-        text: 'Fill all mandatory fields',
+        text: 'Title or image fields are missing',
         icon: 'error',
         button: 'Close',
         dangerMode: true,
@@ -67,6 +74,10 @@ const AddPhoto = () => {
     const formData = new FormData()
     formData.append('title', data.title)
     formData.append('imageFile', data.imageFile)
+    formData.append('description', data.description)
+    data.filesData.forEach((element) => {
+      formData.append('filesData[]', element)
+    })
     axios
       .post(`${API}/api/photogallery`, formData, {
         headers: {
@@ -165,6 +176,7 @@ const AddPhoto = () => {
                 />
                 <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
               </div>
+
               <div className="mb-3">
                 <label htmlFor="imageURL" className="form-label">
                   Upload Image*
@@ -178,6 +190,47 @@ const AddPhoto = () => {
                 />
                 <p className="pt-1 pl-2 text-secondary">Upload jpg, jpeg and png only*</p>
               </div>
+
+              <div class="mb-3">
+                <div>
+                  <label htmlFor="textarea80words" className="form-label">
+                    Description*
+                  </label>
+                </div>
+                <div>
+                  {' '}
+                  <textarea
+                    class="form-control"
+                    id="textarea80words"
+                    aria-label="With textarea"
+                    maxLength="80"
+                    style={{ height: '300px' }}
+                    placeholder="Maximum length of 80 words"
+                    value={data.description}
+                    onChange={(e) => {
+                      handleChange(e)
+                    }}
+                  ></textarea>
+                </div>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="filesData" className="form-label">
+                  Upload Files (Images & videos)*
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="filesData"
+                  //   accept="image/*"
+                  multiple={true}
+                  onChange={(e) => {
+                    console.log('hiiii', e.target.files)
+                    handleChange(e)
+                  }}
+                />
+                <p className="pt-1 pl-2 text-secondary">Upload jpg, jpeg and png only*</p>
+              </div>
+
               <div className="mb-3" style={{ height: '200px' }}>
                 <img src={data.imageURL} alt="" height="200px" />
               </div>

@@ -1,5 +1,9 @@
 // for localhost
-//export const API = 'http://localhost:5000'
+// export const API = 'http://localhost:5000'
 
-// heroku
-export const API = 'https://kpf-api.herokuapp.com'
+// Cyclic url
+export const API = '"https://proud-pink-calf.cyclic.app"'
+
+//netlify
+
+//export const API = 'https://6380ce1057370922961769a7--kpf-api.netlify.app/
