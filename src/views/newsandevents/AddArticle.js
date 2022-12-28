@@ -20,6 +20,7 @@ const AddArticle = () => {
     timestamp: new Date(),
     video: '',
     videoURL: '',
+    imageFile: null,
   })
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
@@ -73,7 +74,12 @@ const AddArticle = () => {
   }
 
   const handleSubmit = (type) => {
-    if (data.title.trim() === '' || data.description === '' || data.category === '') {
+    if (
+      data.title.trim() === '' ||
+      data.description === '' ||
+      data.category === '' ||
+      data.imageFile.length === 0
+    ) {
       swal({
         title: 'Warning',
         text: 'Fill all mandatory fields',
@@ -84,12 +90,20 @@ const AddArticle = () => {
       return
     }
     setLoading(true)
+    console.log('This is th edata.image filllle', data.imageFile)
     const formData = new FormData()
     formData.append('_id', data.uniqId)
     formData.append('article_title', data.title)
     formData.append('description', data.description)
     formData.append('category', data.category)
     formData.append('createdAt', data.timestamp)
+    formData.append('imageFile', data.imageFile)
+    // setData((prev) => ({
+    //   ...prev,
+    //   imageURL: URL.createObjectURL(e.target.files[0]),
+    //   imageFile: e.target.files[0],
+    // }))
+
     if (type === 'publish') {
       formData.append('status', 'Published')
       formData.append('published_on', data.timestamp)
@@ -206,6 +220,20 @@ const AddArticle = () => {
                   onChange={(e) => handleChange(e)}
                 />
                 <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="imageFile" className="form-label">
+                  Article thumbnail image*
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  name="imageFile"
+                  accept="image/*"
+                  onChange={(e) => setData({ ...data, imageFile: e.target.files[0] })}
+                />
+                <p className="pt-1 pl-2 text-secondary">Only png and Jpg format</p>
               </div>
               <div className="row mb-3">
                 <label htmlFor="categoryName" className="form-label">

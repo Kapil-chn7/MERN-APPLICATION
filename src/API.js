@@ -1,8 +1,8 @@
 // for localhost
-// export const API = 'http://localhost:5000'
+export const API = 'http://localhost:5000'
 
 // Cyclic url
-export const API = '"https://proud-pink-calf.cyclic.app"'
+//export const API = '"https://proud-pink-calf.cyclic.app"'
 
 //netlify
 

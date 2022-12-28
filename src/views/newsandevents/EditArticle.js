@@ -20,6 +20,8 @@ const EditArticle = () => {
     uniqId: 'Loading',
     timestamp: new Date(),
     status: 'Save as Draft',
+    imageFile: null,
+    viewImage: '',
   })
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
@@ -48,6 +50,7 @@ const EditArticle = () => {
           description: res.data.data.description,
           title: res.data.data.article_title,
           status: res.data.data.status,
+          viewImage: res.data.data.image,
         }))
         setLimiter((prev) => ({
           ...prev,
@@ -111,6 +114,9 @@ const EditArticle = () => {
     formData.append('article_title', data.title)
     formData.append('description', data.description)
     formData.append('category', data.category)
+    if (data.imageFile != null) {
+      formData.append('imageFile', data.imageFile)
+    }
     if (type === 'publish') {
       formData.append('status', 'Published')
       formData.append('published_on', data.timestamp)
@@ -231,6 +237,25 @@ const EditArticle = () => {
                   onChange={(e) => handleChange(e)}
                 />
                 <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="imageFile" className="form-label">
+                  Edit thumbnail image*
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  name="imageFile"
+                  accept="image/*"
+                  onChange={(e) => setData({ ...data, imageFile: e.target.files[0] })}
+                />
+                <p className="pt-1 pl-2 text-secondary">Only png and Jpg format</p>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="imageFile" className="form-label">
+                  Previous thumbnail image*
+                </label>
+                <img src={data.viewImage} style={{ maxHeight: '400px', maxWidth: '400px' }} />
               </div>
               <div className="row mb-3">
                 <label htmlFor="categoryName" className="form-label">
