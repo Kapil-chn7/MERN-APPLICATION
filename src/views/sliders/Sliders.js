@@ -16,11 +16,27 @@ const Sliders = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemPerPage, setItemPerPage] = useState(10)
   const [showData, setShowData] = useState(slidersData)
+  const [videoRecent, uploadVideo] = useState([])
+  const [bestVideoLink, updateBestVideo] = useState({})
 
   const handleShowEntries = (e) => {
     setCurrentPage(1)
     setItemPerPage(e.target.value)
   }
+  useEffect(() => {
+    axios
+
+      .get(`${API}/api/sliders/getbestVideo`, {
+        headers: { 'Access-Control-Allow-Origin': '*', Authorization: `Bearer ${token}` },
+      })
+      .then((resp) => {
+        console.log('this is the repsone', resp.data.data[0].videoUrl)
+        updateBestVideo(resp.data.data[0])
+      })
+      .catch((err) => {
+        console.log('this si the error', err)
+      })
+  }, [])
 
   const getSliders = () => {
     axios
@@ -80,6 +96,53 @@ const Sliders = () => {
       }
     })
   }
+
+  const uploadRecentVideo = () => {
+    console.log('hhhhh', videoRecent.length)
+    if (videoRecent.length === 0) {
+      console.log('empty')
+      swal({
+        title: 'Warning',
+        text: 'Please Provide File',
+        icon: 'warning',
+        button: 'Retry',
+        dangerMode: true,
+      })
+    } else {
+      const videoVal = new FormData()
+      videoVal.append('bestVideo', videoRecent[0])
+      videoVal.append('id', bestVideoLink._id)
+      console.log('this is the video Recent ', videoRecent[0])
+      axios
+        .patch(`${API}/api/sliders/updateBestVideo`, videoVal, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/formdata',
+          },
+        })
+        .then((resp) => {
+          console.log('this is the resp', resp)
+          swal({
+            title: 'Saved',
+            text: 'Video Updated Successfully',
+            icon: 'success',
+            button: 'Retry',
+            dangerMode: false,
+          })
+        })
+        .catch((err) => {
+          swal({
+            title: 'Warning',
+            text: 'Something went wrong!',
+            icon: 'error',
+            button: 'Retry',
+            dangerMode: true,
+          })
+        })
+    }
+  }
+
   return (
     <div className="main-content">
       <div className="page-content">
@@ -119,10 +182,50 @@ const Sliders = () => {
               </div>
             </div>
           </div>
+
           <div className="row">
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-body">
+                  <div className="row mt-3">
+                    <div className="col-12">
+                      <div
+                        className="
+                    page-title-box
+                    d-flex
+                    align-items-center
+                    justify-content-between
+                  "
+                      >
+                        <div style={{ fontSize: '18px' }} className="fw-bold mb-3">
+                          Upload Best Video Of The Month
+                        </div>
+
+                        <div className="row">
+                          <a href={bestVideoLink.videoUrl} target="blank">
+                            View Current Video
+                          </a>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <input
+                          type="file"
+                          accept="video/*"
+                          onChange={(e) => {
+                            // console.log('video ee ', e, e.target.files[0])
+                            uploadVideo([e.target.files[0]])
+                          }}
+                        />
+                      </div>
+                      <button
+                        className="btn btn-danger mt-3 mb-5"
+                        style={{ color: 'white' }}
+                        onClick={uploadRecentVideo}
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  </div>
                   <div className="row ml-0 mr-0 mb-10">
                     <div className="col-sm-12 col-md-12">
                       <div className="dataTables_length">

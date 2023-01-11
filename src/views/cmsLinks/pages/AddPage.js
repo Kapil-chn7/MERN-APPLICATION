@@ -11,6 +11,7 @@ export default function AddPage() {
   const [dataObj, updateData] = useState({ title: '', updateditorData: '', file: null })
   const [choice, updatechoice] = useState('0')
   const [advisory, updateadvisory] = useState({ title: '', description: '', file: null })
+  const [testimonies, updatetestimonies] = useState({ title: '', description: '', file: null })
   const [ourpartners, updatepartners] = useState({ title: '', description: '', file: null })
   const [whatdowedo, updatewhatdowedo] = useState('')
   const [loading, updateloading] = useState(false)
@@ -53,8 +54,6 @@ export default function AddPage() {
     console.log('this is the e', e)
 
     if (e === '0') {
-      console.log('this is the element of advisoty board', advisory)
-
       if (advisory.title === '' || advisory.description === '' || advisory.file === null) {
         swal({
           title: 'Input is missing',
@@ -215,7 +214,48 @@ export default function AddPage() {
             })
           })
       }
-    } else if (e == '4') {
+    } else if (e === '4') {
+      if (testimonies.title === '' || testimonies.description === '' || testimonies.file === null) {
+        swal({
+          title: 'Input is missing',
+          text: 'Please provide some input',
+          icon: 'warning',
+          button: 'Return',
+        })
+      } else {
+        //send axios requ3est
+        updateloading(true)
+        const formdata = new FormData()
+        formdata.append('title', testimonies.title)
+        formdata.append('description', testimonies.description)
+        formdata.append('file', testimonies.file, 'file')
+
+        await axios
+          .post(`${API}/api/addpage/testimonies`, formdata, {
+            headers: {
+              'Content-Type': 'multipart/formdata',
+            },
+          })
+          .then((resp) => {
+            updateloading(false)
+            swal({
+              title: 'Success',
+              text: 'Content has been added',
+              icon: 'success',
+              button: 'Return',
+            })
+          })
+          .catch((err) => {
+            updateloading(false)
+
+            swal({
+              title: 'Server Error',
+              text: 'Something went wrong',
+              icon: 'warning',
+              button: 'Return',
+            })
+          })
+      }
     }
   }
 
@@ -434,62 +474,46 @@ export default function AddPage() {
 
       case '4':
         return (
-          <div>
-            <div
-              className="row mt-3"
-              // style={style1}
-            >
-              {/* <div className="input-group mb-3">
-                <span className="input-group-text" id="inputGroup-sizing-default">
-                  Title
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="title"
-                  value={dataObj.title}
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  onChange={(e) => {
-                    changeData(e)
-                  }}
-                  required
-                />
-              </div> */}
+          <div className=" card w-50 row mt-3">
+            <div className="card-body">
+              <input
+                type="file"
+                className="form-control w-50"
+                id="imageURL"
+                name="filename"
+                onChange={(e) => {
+                  updatetestimonies({ ...testimonies, file: e.target.files[0] })
+                }}
+              />
+              <p className="pt-1 pl-2 text-secondary">Upload pic*</p>
             </div>
-
-            <div className="row mt-3">
-              <div className="App">
-                <CKEditor
-                  editor={ClassicEditor}
-                  config={{
-                    extraPlugins: [MyCustomUploadAdapterPlugin],
-                    removePlugins: ['MediaEmbed'],
-                  }}
-                  onReady={(editor) => {
-                    // You can store the "editor" and use when it is needed.
-                    // console.log("Editor is ready to use!", editor);
-                    editor.editing.view.change((writer) => {
-                      writer.setStyle('height', '200px', editor.editing.view.document.getRoot())
-                    })
-                  }}
-                  data={dataObj.updateditorData}
-                  // onReady={(editor) => {
-                  //   // You can store the "editor" and use when it is needed.
-                  //   // console.log('Editor is ready to use!', editor)
-                  // }}
-                  onChange={(event, editor) => {
-                    const data = editor.getData()
-                    ckeditordataupdate(data)
-                  }}
-                  onBlur={(event, editor) => {
-                    //   console.log('Blur.', editor)
-                  }}
-                  onFocus={(event, editor) => {
-                    //   console.log('Focus.', editor)
-                  }}
-                />
-              </div>
+            <div className="input-group mb-3">
+              <span className="input-group-text" id="basic-addon1">
+                Title
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Username"
+                value={testimonies.title}
+                onChange={(e) => {
+                  updatetestimonies({ ...testimonies, title: e.target.value })
+                }}
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div className="input-group">
+              <textarea
+                placeholder="Description Here"
+                value={testimonies.description}
+                onChange={(e) => {
+                  updatetestimonies({ ...testimonies, description: e.target.value })
+                }}
+                className="form-control"
+                aria-label="With textarea"
+                style={{ height: '150px' }}
+              ></textarea>
             </div>
           </div>
         )
@@ -513,7 +537,7 @@ export default function AddPage() {
                 <option value="1">Footer</option>
                 <option value="2">What do we do</option>
                 <option value="3">Our Partners</option>
-                <option value="4">About Us</option>
+                <option value="4">Testimonies</option>
                 {/* <option value="3"></option> */}
               </select>
             </div>

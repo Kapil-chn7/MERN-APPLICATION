@@ -116,6 +116,54 @@ export default function EditorDelete() {
           </div>
         </div>
       )
+    } else if (choice == '4') {
+      return (
+        <div className=" card w-50 row mt-3">
+          <div className="card-body">
+            <input
+              type="file"
+              className="form-control w-50"
+              id="imageURL"
+              name="filename"
+              onChange={(e) => {
+                updatedataval({ ...dataval, file: e.target.files[0] })
+              }}
+            />
+            <p className="pt-1 pl-2 text-secondary">Upload pic*</p>
+            <div className="row">
+              <a href={dataval.url}>View Previous Image</a>
+            </div>
+          </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">
+              Title
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Username"
+              value={dataval.title}
+              onChange={(e) => {
+                updatedataval({ ...dataval, title: e.target.value })
+              }}
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <div className="input-group">
+            <textarea
+              placeholder="Description Here"
+              value={dataval.description}
+              onChange={(e) => {
+                updatedataval({ ...dataval, description: e.target.value })
+              }}
+              className="form-control"
+              aria-label="With textarea"
+              style={{ height: '150px' }}
+            ></textarea>
+          </div>
+        </div>
+      )
     }
   }
 
@@ -173,6 +221,44 @@ export default function EditorDelete() {
 
       await axios
         .patch(`${API}/api/addpage/advisoryboard/update`, formdata, {
+          headers: {
+            'Content-Type': 'multipart/formdata',
+          },
+        })
+        .then((resp) => {
+          updateloading(false)
+          swal({
+            title: 'Success',
+            text: 'Content has been added',
+            icon: 'success',
+            button: 'Return',
+          })
+        })
+        .catch((err) => {
+          console.log('this is the error', err)
+          updateloading(false)
+          swal({
+            title: 'Server Error',
+            text: 'Something went wrong',
+            icon: 'warning',
+            button: 'Return',
+          })
+        })
+    } else if (location.state.choice === '4') {
+      //send axios requ3est
+      updateloading(true)
+      const formdata = new FormData()
+      formdata.append('title', dataval.title)
+      formdata.append('description', dataval.description)
+
+      formdata.append('id', dataval._id)
+
+      if (dataval.file != undefined) {
+        formdata.append('file', dataval.file, 'file')
+      }
+
+      await axios
+        .patch(`${API}/api/addpage/testimonies/update`, formdata, {
           headers: {
             'Content-Type': 'multipart/formdata',
           },

@@ -33,7 +33,7 @@ export default function AcccessibleTable() {
         ? '/whatdowedoGet'
         : choice === '3'
         ? '/ourpartnersGet'
-        : ''
+        : '/gettestimonies'
 
     axios
       .get(`${API}/api/addpage` + urlval)
@@ -60,7 +60,7 @@ export default function AcccessibleTable() {
             ? '/whatdowedoGet'
             : choice === '3'
             ? '/ourpartners'
-            : ''
+            : '/testimonies'
         const res = await axios.delete(`${API}/api/addpage${urlval}/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -113,7 +113,7 @@ export default function AcccessibleTable() {
   }
 
   const disableEditfuntion = (e) => {
-    if (e === '2' || e === '4') {
+    if (e === '2') {
       updateEdit(true)
     } else {
       updateEdit(false)
@@ -360,8 +360,63 @@ export default function AcccessibleTable() {
           </TableContainer>
         </div>
       )
-    } else {
-      return <div className="row"></div>
+    } else if (choice === '4') {
+      return (
+        <div className="row">
+          <div className="row">
+            <p>
+              <h3>Testimonies</h3>
+            </p>
+          </div>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="caption table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">Name</TableCell>
+                  <TableCell align="left">Added On</TableCell>
+                  <TableCell align="left">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {loading ? (
+                  <TableRow align="center">
+                    <TableCell>Loading...</TableCell>
+                  </TableRow>
+                ) : (
+                  tabledata.map((element) => {
+                    return (
+                      <TableRow key={element._id}>
+                        <TableCell align="left">{element.title}</TableCell>
+                        <TableCell align="left">{getDatetime(element)}</TableCell>
+                        <TableCell align="left">
+                          <Link
+                            className="btn btn-primary btn-sm"
+                            to={`/view/page/editpage/${element._id}`}
+                            state={{ data: element, choice }}
+                          >
+                            Edit
+                          </Link>
+                          &nbsp;
+                          {editOnly === true ? (
+                            <div></div>
+                          ) : (
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => deleteFunction(element._id)}
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      )
     }
   }
 
@@ -412,7 +467,7 @@ export default function AcccessibleTable() {
           <option value="1">Advisory Board</option>
           <option value="2">What do we do</option>
           <option value="3">Our Partner</option>
-          <option value="4">About Us</option>
+          <option value="4">Testimonies</option>
         </select>
       </div>
       <div className="row">{updateContentFunction()}</div>
