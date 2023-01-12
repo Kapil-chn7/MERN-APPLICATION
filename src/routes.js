@@ -121,6 +121,7 @@ const Maps = React.lazy(() => import('./views/maps/Map'))
 const Addmaps = React.lazy(() => import('./views/maps/Addmap'))
 const Viewmap = React.lazy(() => import('./views/maps/Viewmap'))
 const Editmap = React.lazy(() => import('./views/maps/Editmap'))
+const UpdateStats = React.lazy(() => import('./views/updateStats/Addeditorupdate'))
 
 const routes = [
   // { path: '/', exact: true, name: 'Login', element: Login },
@@ -279,6 +280,7 @@ const routes = [
     name: 'Edit Map',
     element: Editmap,
   },
+  { path: '/view/updatestats', name: 'NewsandEvents', element: UpdateStats },
 ]
 
 export default routes

@@ -192,7 +192,12 @@ const _nav = [
     icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
     to: '/view/maps',
   },
-
+  {
+    component: CNavItem,
+    name: 'UpdateStats',
+    icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
+    to: '/view/updatestats',
+  },
   {
     component: CNavGroup,
     name: 'Settings',
