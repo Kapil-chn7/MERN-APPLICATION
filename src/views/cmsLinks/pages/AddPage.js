@@ -10,7 +10,12 @@ import { useNavigate } from 'react-router-dom'
 export default function AddPage() {
   const [dataObj, updateData] = useState({ title: '', updateditorData: '', file: null })
   const [choice, updatechoice] = useState('0')
-  const [advisory, updateadvisory] = useState({ title: '', description: '', file: null })
+  const [advisory, updateadvisory] = useState({
+    title: '',
+    description: '',
+    linkdinurl: '',
+    file: null,
+  })
   const [testimonies, updatetestimonies] = useState({ title: '', description: '', file: null })
   const [ourpartners, updatepartners] = useState({ title: '', description: '', file: null })
   const [whatdowedo, updatewhatdowedo] = useState('')
@@ -54,7 +59,12 @@ export default function AddPage() {
     console.log('this is the e', e)
 
     if (e === '0') {
-      if (advisory.title === '' || advisory.description === '' || advisory.file === null) {
+      if (
+        advisory.title === '' ||
+        advisory.description === '' ||
+        advisory.file === null ||
+        advisory.linkdinurl === ''
+      ) {
         swal({
           title: 'Input is missing',
           text: 'Please provide some input',
@@ -66,6 +76,7 @@ export default function AddPage() {
         updateloading(true)
         const formdata = new FormData()
         formdata.append('title', advisory.title)
+        formdata.append('linkedinurl', advisory.linkdinurl)
         formdata.append('description', advisory.description)
         formdata.append('file', advisory.file, 'file')
 
@@ -293,6 +304,22 @@ export default function AddPage() {
                 value={advisory.title}
                 onChange={(e) => {
                   updateadvisory({ ...advisory, title: e.target.value })
+                }}
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div className="input-group mb-3">
+              <span className="input-group-text" id="basic-addon1">
+                Linkedin Url
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Linkedin Url"
+                value={advisory.linkdinurl}
+                onChange={(e) => {
+                  updateadvisory({ ...advisory, linkdinurl: e.target.value })
                 }}
                 aria-label="Username"
                 aria-describedby="basic-addon1"

@@ -102,6 +102,22 @@ export default function EditorDelete() {
               aria-describedby="basic-addon1"
             />
           </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">
+              Linkedin Url
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Username"
+              value={dataval.linkedinurl}
+              onChange={(e) => {
+                updatedataval({ ...dataval, linkedinurl: e.target.value })
+              }}
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
           <div className="input-group">
             <textarea
               placeholder="Description Here"
@@ -212,7 +228,7 @@ export default function EditorDelete() {
       const formdata = new FormData()
       formdata.append('title', dataval.title)
       formdata.append('description', dataval.description)
-
+      formdata.append('linkedinurl', dataval.linkedinurl)
       formdata.append('id', dataval._id)
 
       if (dataval.file != undefined) {
