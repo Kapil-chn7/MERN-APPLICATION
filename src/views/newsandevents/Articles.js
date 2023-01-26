@@ -12,7 +12,7 @@ const Articles = () => {
   const [loading, setLoading] = useState(true)
   const [success, setSuccess] = useState(true)
   const [articlesData, setArticlesData] = useState([])
-
+  const [articleID, updateArticleID] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [itemPerPage, setItemPerPage] = useState(10)
   const [showData, setShowData] = useState(articlesData)
@@ -20,6 +20,18 @@ const Articles = () => {
   const handleShowEntries = (e) => {
     setCurrentPage(1)
     setItemPerPage(e.target.value)
+  }
+
+  const getArticleID = () => {
+    axios
+      .get(`${API}/api/newsandevents/article/getarticleid`)
+      .then((resp) => {
+        console.log('thsi si the id and article iD', resp.data.data)
+        updateArticleID(resp.data.data)
+      })
+      .catch((err) => {
+        console.warn('Server error')
+      })
   }
 
   const getArticles = () => {
@@ -38,6 +50,7 @@ const Articles = () => {
   }
 
   useEffect(() => {
+    getArticleID()
     getArticles()
   }, [success])
 
@@ -78,6 +91,32 @@ const Articles = () => {
           })
       }
     })
+  }
+
+  const updateID = () => {
+    axios
+      .patch(
+        `${API}/api/newsandevents/article/updatearticleid`,
+        { articleID },
+        {
+          headers: { 'Access-Control-Allow-Origin': '*', Authorization: `Bearer ${token}` },
+        },
+      )
+      .then((resp) => {
+        console.log('this is the rpsonse sweet alert', resp.data.data.ArticleID)
+        updateArticleID(resp.data.data.ArticleID)
+
+        swal({
+          title: 'Success',
+          text: 'Updated Successfully!',
+          icon: 'success',
+          button: 'Retry',
+          dangerMode: false,
+        })
+      })
+      .catch((err) => {
+        console.warn(err)
+      })
   }
 
   return (
@@ -148,7 +187,30 @@ const Articles = () => {
                       </div>
                     </div>
                   </div>
-
+                  <div className="row mt-4">
+                    <p>Enter ID of video you want to show on homepage</p>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">
+                        ID
+                      </span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Give ID which you want to show at home page"
+                        aria-label="Username"
+                        value={articleID}
+                        onChange={(e) => {
+                          updateArticleID(e.target.value)
+                        }}
+                        aria-describedby="basic-addon1"
+                      />
+                    </div>
+                    <div className="col-12">
+                      <button className="btn btn-danger" onClick={updateID}>
+                        Update ID
+                      </button>
+                    </div>
+                  </div>
                   <div className="table-responsive table-shoot mt-3">
                     <table
                       className="table table-centered table-nowrap"

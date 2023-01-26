@@ -21,6 +21,7 @@ const EditArticle = () => {
     timestamp: new Date(),
     status: 'Save as Draft',
     imageFile: null,
+    date: '',
     viewImage: '',
   })
   const [categories, setCategories] = useState([])
@@ -42,6 +43,11 @@ const EditArticle = () => {
         },
       })
       .then((res) => {
+        // console.log(
+        //   'This is the console.log value of the date',
+        //   res.data.data.date.toISOString().slice(0, 10),
+        // )
+
         setData((prev) => ({
           ...prev,
           uniqId: res.data.data._id,
@@ -49,6 +55,7 @@ const EditArticle = () => {
           category: res.data.data.category,
           description: res.data.data.description,
           title: res.data.data.article_title,
+          date: res.data.data.date.slice(0, 10),
           status: res.data.data.status,
           viewImage: res.data.data.image,
         }))
@@ -114,6 +121,7 @@ const EditArticle = () => {
     formData.append('article_title', data.title)
     formData.append('description', data.description)
     formData.append('category', data.category)
+    formData.append('date', data.date)
     if (data.imageFile != null) {
       formData.append('imageFile', data.imageFile)
     }
@@ -237,6 +245,20 @@ const EditArticle = () => {
                   onChange={(e) => handleChange(e)}
                 />
                 <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="imageFile" className="form-label">
+                  Article Date*
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="date"
+                  value={data.date}
+                  // accept="image/*"
+                  onChange={(e) => setData({ ...data, date: e.target.value })}
+                />
+                <p className="pt-1 pl-2 text-secondary">Please provide date of article</p>
               </div>
               <div className="mb-3">
                 <label htmlFor="imageFile" className="form-label">

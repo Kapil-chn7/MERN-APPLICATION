@@ -13,6 +13,7 @@ import { API } from '../../../API'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { isAutheticated } from '../../../components/auth/authhelper'
+import swal from 'sweetalert'
 
 export default function AcccessibleTable() {
   const [tabledata, updatetabledata] = useState([])
@@ -20,6 +21,44 @@ export default function AcccessibleTable() {
   const [loading, disableLoading] = useState(false)
   const [editOnly, updateEdit] = useState(false)
   const [choice, updateChoice] = useState('0')
+  const [testimonyID, updatetestimony] = useState('')
+
+  const updateID = () => {
+    axios
+      .patch(
+        `${API}/api/addpage/updateidoftestimonies`,
+        { testimoniesID: testimonyID },
+        {
+          headers: { 'Access-Control-Allow-Origin': '*', Authorization: `Bearer ${token}` },
+        },
+      )
+      .then((resp) => {
+        updatetestimony(resp.data.data.testimonyID)
+
+        swal({
+          title: 'Success',
+          text: 'Updated Successfully!',
+          icon: 'success',
+          button: 'Retry',
+          dangerMode: false,
+        })
+      })
+      .catch((err) => {
+        console.warn(err)
+      })
+  }
+
+  const getTestimoniesID = () => {
+    axios
+      .get(`${API}/api/addpage/updateidoftestimonies`)
+      .then((resp) => {
+        // console.log('thsi si the id and article iD', resp.data.data)
+        updatetestimony(resp.data.data)
+      })
+      .catch((err) => {
+        console.warn('Server error')
+      })
+  }
 
   //this function gets the table data from database
   async function getTabledata() {
@@ -372,7 +411,34 @@ export default function AcccessibleTable() {
             <Table sx={{ minWidth: 650 }} aria-label="caption table">
               <TableHead>
                 <TableRow>
+                  <div className="row mt-4">
+                    <p>Enter ID of video you want to show on homepage</p>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">
+                        ID
+                      </span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Give ID which you want to show at home page"
+                        aria-label="Username"
+                        value={testimonyID}
+                        onChange={(e) => {
+                          updatetestimony(e.target.value)
+                        }}
+                        aria-describedby="basic-addon1"
+                      />
+                    </div>
+                    <div className="col-12">
+                      <button className="btn btn-danger" onClick={updateID}>
+                        Update ID
+                      </button>
+                    </div>
+                  </div>
+                </TableRow>
+                <TableRow>
                   <TableCell align="left">Name</TableCell>
+                  <TableCell align="left">ID</TableCell>
                   <TableCell align="left">Added On</TableCell>
                   <TableCell align="left">Action</TableCell>
                 </TableRow>
@@ -384,9 +450,11 @@ export default function AcccessibleTable() {
                   </TableRow>
                 ) : (
                   tabledata.map((element) => {
+                    // console.log('this is the element', element._id)
                     return (
                       <TableRow key={element._id}>
                         <TableCell align="left">{element.title}</TableCell>
+                        <TableCell align="left">{element._id}</TableCell>
                         <TableCell align="left">{getDatetime(element)}</TableCell>
                         <TableCell align="left">
                           <Link
@@ -422,7 +490,7 @@ export default function AcccessibleTable() {
 
   useEffect(() => {
     //this call is to get all the page content in the table data state
-
+    getTestimoniesID()
     getTabledata()
   }, [choice])
   return (

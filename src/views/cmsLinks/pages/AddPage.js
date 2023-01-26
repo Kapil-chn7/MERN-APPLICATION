@@ -16,7 +16,14 @@ export default function AddPage() {
     linkdinurl: '',
     file: null,
   })
-  const [testimonies, updatetestimonies] = useState({ title: '', description: '', file: null })
+  const [testimonies, updatetestimonies] = useState({
+    title: '',
+    description: '',
+    imageFile: null,
+    videoFile: null,
+    imageIstrue: true,
+    videoIstrue: false,
+  })
   const [ourpartners, updatepartners] = useState({ title: '', description: '', file: null })
   const [whatdowedo, updatewhatdowedo] = useState('')
   const [loading, updateloading] = useState(false)
@@ -226,7 +233,11 @@ export default function AddPage() {
           })
       }
     } else if (e === '4') {
-      if (testimonies.title === '' || testimonies.description === '' || testimonies.file === null) {
+      if (
+        testimonies.title === '' ||
+        testimonies.description === '' ||
+        testimonies.imageFile === null
+      ) {
         swal({
           title: 'Input is missing',
           text: 'Please provide some input',
@@ -239,8 +250,12 @@ export default function AddPage() {
         const formdata = new FormData()
         formdata.append('title', testimonies.title)
         formdata.append('description', testimonies.description)
-        formdata.append('file', testimonies.file, 'file')
-
+        formdata.append('imageFile', testimonies.imageFile, 'imageFile')
+        formdata.append('imageIstrue', testimonies.imageIstrue)
+        formdata.append('videoIstrue', testimonies.videoIstrue)
+        if (testimonies.videoFile != null) {
+          formdata.append('videoFile', testimonies.videoFile, 'videoFile')
+        }
         await axios
           .post(`${API}/api/addpage/testimonies`, formdata, {
             headers: {
@@ -509,7 +524,7 @@ export default function AddPage() {
                 id="imageURL"
                 name="filename"
                 onChange={(e) => {
-                  updatetestimonies({ ...testimonies, file: e.target.files[0] })
+                  updatetestimonies({ ...testimonies, imageFile: e.target.files[0] })
                 }}
               />
               <p className="pt-1 pl-2 text-secondary">Upload pic*</p>
@@ -529,6 +544,46 @@ export default function AddPage() {
                 aria-label="Username"
                 aria-describedby="basic-addon1"
               />
+            </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="inputGroupFile01">
+                Upload Video
+              </label>
+              <input
+                type="file"
+                class="form-control"
+                id="inputGroupFile012"
+                // value={testimonies.video}
+                onChange={(e) => {
+                  updatetestimonies({ ...testimonies, videoFile: e.target.files[0] })
+                }}
+                accept="video/mp4,video/x-m4v,video/*"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  // updatetestimonies({ ...testimonies, video: e.target.files[0] })
+                  // updatedataval({ ...dataval, video: e.target.files[0] })
+                  if (e.target.value === 'image') {
+                    // updatedataval({ ...dataval, image: e.target.value, video: '' })
+
+                    updatetestimonies({ ...testimonies, imageIstrue: true })
+                  } else {
+                    //updatedataval({ ...dataval, image: '', video: e.target.value })
+                    updatetestimonies({ ...testimonies, videoIstrue: true, imageIstrue: false })
+                  }
+                }}
+              >
+                <option selected value="image" name="image">
+                  Show Image in testimony
+                </option>
+                <option value="video" name="video">
+                  Show video in testimony
+                </option>
+              </select>
             </div>
             <div className="input-group">
               <textarea

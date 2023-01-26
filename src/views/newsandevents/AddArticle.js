@@ -12,6 +12,7 @@ import MyCustomUploadAdapterPlugin from '../../assets/plugins/CustomUploadPlugin
 const AddArticle = () => {
   const { token } = isAutheticated()
   const navigate = useNavigate()
+
   const [data, setData] = useState({
     title: '',
     description: '',
@@ -20,6 +21,7 @@ const AddArticle = () => {
     timestamp: new Date(),
     video: '',
     videoURL: '',
+    date: '',
     imageFile: null,
   })
   const [categories, setCategories] = useState([])
@@ -78,7 +80,8 @@ const AddArticle = () => {
       data.title.trim() === '' ||
       data.description === '' ||
       data.category === '' ||
-      data.imageFile.length === 0
+      data.imageFile.length === 0 ||
+      data.date === ''
     ) {
       swal({
         title: 'Warning',
@@ -98,6 +101,7 @@ const AddArticle = () => {
     formData.append('category', data.category)
     formData.append('createdAt', data.timestamp)
     formData.append('imageFile', data.imageFile)
+    formData.append('date', data.date)
     // setData((prev) => ({
     //   ...prev,
     //   imageURL: URL.createObjectURL(e.target.files[0]),
@@ -234,6 +238,23 @@ const AddArticle = () => {
                   onChange={(e) => setData({ ...data, imageFile: e.target.files[0] })}
                 />
                 <p className="pt-1 pl-2 text-secondary">Only png and Jpg format</p>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="imageFile" className="form-label">
+                  Article Date*
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="date"
+                  value={data.date}
+                  // accept="image/*"
+                  onChange={(e) => {
+                    console.log('This is the e', e.target.value)
+                    setData({ ...data, date: e.target.value })
+                  }}
+                />
+                <p className="pt-1 pl-2 text-secondary">Please provide date of article</p>
               </div>
               <div className="row mb-3">
                 <label htmlFor="categoryName" className="form-label">

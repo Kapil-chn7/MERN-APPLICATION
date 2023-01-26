@@ -121,6 +121,7 @@ export default function CmsEditor() {
             <p className="pt-1 pl-2 text-secondary">Upload Videos, images and pdf only*</p>
           </div>
         </div>
+
         <div className="row mt-3">
           <div className="col-12 ">
             <button

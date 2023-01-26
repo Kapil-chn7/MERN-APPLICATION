@@ -16,6 +16,7 @@ const EditPhoto = () => {
     title: '',
     image: '',
     description: '',
+    date: '',
     filesData: [],
   })
   const [dataval, updatedataval] = useState({
@@ -61,13 +62,14 @@ const EditPhoto = () => {
         },
       })
       .then((res) => {
-        console.log('this si the data ', res.data.data.filesData)
+        console.log('This is the date datedddddddddddddddd ', res.data.data.date)
         setData((prev) => ({
           ...prev,
           title: res.data.data.title,
           filesData: [...res.data.data.filesData],
           description: res.data.data.description,
           image: res.data.data.image,
+          date: res.data.data.date.slice(0, 10),
         }))
         setLimiter((prev) => ({ ...prev, titleHas: prev.title - res.data.data.title.length }))
       })
@@ -106,6 +108,7 @@ const EditPhoto = () => {
       const formdata = new FormData()
       formdata.append('id', data.id)
       formdata.append('title', data.title)
+      formdata.append('date', data.date)
 
       formdata.append('description', data.description)
 
@@ -307,7 +310,23 @@ const EditPhoto = () => {
                 />
                 <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
               </div>
-
+              <div className="mb-3">
+                <label htmlFor="imageFile" className="form-label">
+                  Event Date*
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="date"
+                  value={data.date}
+                  // accept="image/*"
+                  onChange={(e) => {
+                    console.log('This is the e', e.target.value)
+                    setData({ ...data, date: e.target.value })
+                  }}
+                />
+                <p className="pt-1 pl-2 text-secondary">Please provide date of article</p>
+              </div>
               <div className="mb-3">
                 <label htmlFor="imageURL" className="form-label">
                   Update New Image*

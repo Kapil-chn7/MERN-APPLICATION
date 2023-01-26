@@ -14,6 +14,7 @@ const AddPhoto = () => {
     imageURL: '',
     imageFile: '',
     filesData: [],
+    date: new Date(),
     description: '',
   })
   const [loading, setLoading] = useState(false)
@@ -75,6 +76,7 @@ const AddPhoto = () => {
     formData.append('title', data.title)
     formData.append('imageFile', data.imageFile)
     formData.append('description', data.description)
+    formData.append('date', data.date)
     data.filesData.forEach((element) => {
       formData.append('filesData[]', element)
     })
@@ -190,7 +192,23 @@ const AddPhoto = () => {
                 />
                 <p className="pt-1 pl-2 text-secondary">Upload jpg, jpeg and png only*</p>
               </div>
-
+              <div className="mb-3">
+                <label htmlFor="imageFile" className="form-label">
+                  Event Date*
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="date"
+                  value={data.date}
+                  // accept="image/*"
+                  onChange={(e) => {
+                    console.log('This is the e', e.target.value)
+                    setData({ ...data, date: e.target.value })
+                  }}
+                />
+                <p className="pt-1 pl-2 text-secondary">Please provide date of article</p>
+              </div>
               <div class="mb-3">
                 <div>
                   <label htmlFor="textarea80words" className="form-label">
