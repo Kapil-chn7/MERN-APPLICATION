@@ -21,7 +21,12 @@ const EditArticle = () => {
     timestamp: new Date(),
     status: 'Save as Draft',
     imageFile: null,
+    videoIstrue: false,
+    imageIstrue: true,
+    videoFile: null,
     date: '',
+    viewVideo: '',
+    videoval: '',
     viewImage: '',
   })
   const [categories, setCategories] = useState([])
@@ -58,6 +63,10 @@ const EditArticle = () => {
           date: res.data.data.date.slice(0, 10),
           status: res.data.data.status,
           viewImage: res.data.data.image,
+          viewVideo: res.data.data.videoFile,
+          imageIstrue: res.data.data.imageIstrue,
+          videoIstrue: res.data.data.videoIstrue,
+          videoval: res.data.data.imageIstrue === true ? 'image' : 'video',
         }))
         setLimiter((prev) => ({
           ...prev,
@@ -122,12 +131,17 @@ const EditArticle = () => {
     formData.append('description', data.description)
     formData.append('category', data.category)
     formData.append('date', data.date)
+    formData.append('imageIstrue', data.imageIstrue)
+    formData.append('videoIstrue', data.videoIstrue)
     if (data.imageFile != null) {
       formData.append('imageFile', data.imageFile)
     }
     if (type === 'publish') {
       formData.append('status', 'Published')
       formData.append('published_on', data.timestamp)
+    }
+    if (data.videoFile != null) {
+      formData.append('videoFile', data.videoFile)
     }
     axios
       .patch(`${API}/api/newsandevents/article/${id}`, formData, {
@@ -278,6 +292,66 @@ const EditArticle = () => {
                   Previous thumbnail image*
                 </label>
                 <img src={data.viewImage} style={{ maxHeight: '400px', maxWidth: '400px' }} />
+              </div>
+              <div className="row mb-3">
+                <div class="input-group mb-3">
+                  <a href={data.viewVideo}>VideoPrevious Video</a>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="inputGroupFile01">
+                    Upload Video
+                  </label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="inputGroupFile012"
+                    onChange={(e) => {
+                      // updatetestimonies({ ...testimonies, videoFile: e.target.files[0] })
+
+                      setData({ ...data, videoFile: e.target.files[0] })
+                    }}
+                    accept="video/mp4,video/x-m4v,video/*"
+                  />
+                </div>
+                <div class="input-group mb-3">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    value={data.videoval}
+                    onChange={(e) => {
+                      // updatetestimonies({ ...testimonies, video: e.target.files[0] })
+                      // updatedataval({ ...dataval, video: e.target.files[0] })
+
+                      if (e.target.value === 'image') {
+                        // updatedataval({ ...dataval, image: e.target.value, video: '' })
+                        // updatetestimonies({ ...testimonies, imageIstrue: true })
+
+                        setData({
+                          ...data,
+                          imageIstrue: true,
+                          videoIstrue: false,
+                          videoval: e.target.value,
+                        })
+                      } else {
+                        //updatedataval({ ...dataval, image: '', video: e.target.value })
+                        // updatetestimonies({ ...testimonies, videoIstrue: true, imageIstrue: false })
+                        setData({
+                          ...data,
+                          imageIstrue: false,
+                          videoIstrue: true,
+                          videoval: e.target.value,
+                        })
+                      }
+                    }}
+                  >
+                    <option selected value="image" name="image">
+                      Show Image in Article
+                    </option>
+                    <option value="video" name="video">
+                      Show video in Article
+                    </option>
+                  </select>
+                </div>
               </div>
               <div className="row mb-3">
                 <label htmlFor="categoryName" className="form-label">

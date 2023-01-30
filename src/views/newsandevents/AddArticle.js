@@ -19,10 +19,13 @@ const AddArticle = () => {
     category: '',
     uniqId: 'Loading',
     timestamp: new Date(),
-    video: '',
-    videoURL: '',
+    // video: '',
+    // videoURL: '',
     date: '',
     imageFile: null,
+    videoFile: null,
+    videoIstrue: false,
+    imageIstrue: true,
   })
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
@@ -101,7 +104,12 @@ const AddArticle = () => {
     formData.append('category', data.category)
     formData.append('createdAt', data.timestamp)
     formData.append('imageFile', data.imageFile)
-    formData.append('date', data.date)
+    formData.append('date', data.date.slice(0, 10))
+    formData.append('videoIstrue', data.videoIstrue)
+    formData.append('imageIstrue', data.imageIstrue)
+    if (data.videoFile != null) {
+      formData.append('videoFile', data.videoFile)
+    }
     // setData((prev) => ({
     //   ...prev,
     //   imageURL: URL.createObjectURL(e.target.files[0]),
@@ -257,9 +265,56 @@ const AddArticle = () => {
                 <p className="pt-1 pl-2 text-secondary">Please provide date of article</p>
               </div>
               <div className="row mb-3">
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="inputGroupFile01">
+                    Upload Video
+                  </label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="inputGroupFile012"
+                    // value={testimonies.video}
+                    onChange={(e) => {
+                      // updatetestimonies({ ...testimonies, videoFile: e.target.files[0] })
+                      setData({ ...data, videoFile: e.target.files[0] })
+                    }}
+                    accept="video/mp4,video/x-m4v,video/*"
+                  />
+                </div>
+                <div class="input-group mb-3">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    onChange={(e) => {
+                      // updatetestimonies({ ...testimonies, video: e.target.files[0] })
+                      // updatedataval({ ...dataval, video: e.target.files[0] })
+
+                      if (e.target.value === 'image') {
+                        // updatedataval({ ...dataval, image: e.target.value, video: '' })
+                        // updatetestimonies({ ...testimonies, imageIstrue: true })
+                        setData({ ...data, imageIstrue: true, videoIstrue: false })
+                      } else {
+                        //updatedataval({ ...dataval, image: '', video: e.target.value })
+                        // updatetestimonies({ ...testimonies, videoIstrue: true, imageIstrue: false })
+                        setData({ ...data, imageIstrue: false, videoIstrue: true })
+                      }
+                    }}
+                  >
+                    <option selected value="image" name="image">
+                      Show Image in Article
+                    </option>
+                    <option value="video" name="video">
+                      Show video in Article
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="row mb-3">
                 <label htmlFor="categoryName" className="form-label">
                   Description*
                 </label>
+
                 <div className="App">
                   <CKEditor
                     editor={ClassicEditor}

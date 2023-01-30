@@ -16,6 +16,20 @@ export default function Addeditorupdate() {
     tvalue: '',
     fovalue: '',
   })
+
+  const [stats, updateStats] = useState({
+    health: [],
+    livelihood: [],
+    education: [],
+    climate: [],
+    skill: [],
+    roadSafety: [],
+    disasterManagement: [],
+    humanTrafficking: [],
+  })
+  const [dropdownval, updatedropdown] = useState('education')
+
+  const updateval = () => {}
   useEffect(() => {
     axios
       .get(`${API}/api/stats`, {
@@ -281,6 +295,53 @@ export default function Addeditorupdate() {
                       <button className="btn btn-primary" onClick={Submit}>
                         Update
                       </button>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className="row">Update State, Village, People</div>
+                  <hr />
+                  <div className="row">
+                    <div className="col-lg-4">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">
+                          States
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Education"
+                          aria-label="Education"
+                          aria-describedby="basic-addon1"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">
+                          Villages
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Education"
+                          aria-label="Education"
+                          aria-describedby="basic-addon1"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">
+                          People
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Education"
+                          aria-label="Education"
+                          aria-describedby="basic-addon1"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
