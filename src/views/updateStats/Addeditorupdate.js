@@ -18,14 +18,14 @@ export default function Addeditorupdate() {
   })
 
   const [stats, updateStats] = useState({
-    health: [],
-    livelihood: [],
-    education: [],
-    climate: [],
-    skill: [],
-    roadSafety: [],
-    disasterManagement: [],
-    humanTrafficking: [],
+    health: { states: '', villages: '', people: '' },
+    livelihood: { states: '', villages: '', people: '' },
+    education: { states: '', villages: '', people: '' },
+    climate: { states: '', villages: '', people: '' },
+    skill: { states: '', villages: '', people: '' },
+    roadsafety: { states: '', villages: '', people: '' },
+    disastermanagement: { states: '', villages: '', people: '' },
+    humantrafficking: { states: '', villages: '', people: '' },
   })
   const [dropdownval, updatedropdown] = useState('education')
 
@@ -40,10 +40,12 @@ export default function Addeditorupdate() {
       })
       .then((resp) => {
         let obj = {}
-        Object.keys(resp.data.data).map((e) => {
-          obj[e] = resp.data.data[e]
-        })
-        updateData(obj)
+
+        // Object.keys(resp.data.data).map((e) => {
+        //   obj[e] = resp.data.data[e]
+        // })
+        updateData({ ...resp.data.data.data })
+        updateStats({ ...resp.data.data.stats })
       })
       .catch((err) => {
         console.warn(err)
@@ -54,6 +56,11 @@ export default function Addeditorupdate() {
     let validate = false
 
     Object.keys(data).map((e) => {
+      if (data[e] === '') {
+        validate = true
+      }
+    })
+    Object.keys(stats).map((e) => {
       if (data[e] === '') {
         validate = true
       }
@@ -70,12 +77,16 @@ export default function Addeditorupdate() {
     } else {
       setLoading(true)
       axios
-        .patch(`${API}/api/stats`, data, {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            Authorization: `Bearer ${token}`,
+        .patch(
+          `${API}/api/stats`,
+          { data: data, stats: stats },
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              Authorization: `Bearer ${token}`,
+            },
           },
-        })
+        )
         .then((resp) => {
           console.log('resp', resp)
           setLoading(false)
@@ -290,16 +301,27 @@ export default function Addeditorupdate() {
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-12">
-                      <button className="btn btn-primary" onClick={Submit}>
-                        Update
-                      </button>
-                    </div>
-                  </div>
+
                   <hr />
                   <div className="row">Update State, Village, People</div>
                   <hr />
+                  <select
+                    class="form-select mb-4"
+                    aria-label="Default select example"
+                    value={dropdownval}
+                    onChange={(e) => {
+                      updatedropdown(e.target.value)
+                    }}
+                  >
+                    <option value="education">Education</option>
+                    <option value="health">Health</option>
+                    <option value="skill">Skill</option>
+                    <option value="climate">climate</option>
+                    <option value="livelihood">livelihood</option>
+                    <option value="disastermanagement">disastermanagement</option>
+                    <option value="roadsafety">roadsafety</option>
+                    <option value="humantrafficking">humantrafficking</option>
+                  </select>
                   <div className="row">
                     <div className="col-lg-4">
                       <div class="input-group mb-3">
@@ -309,8 +331,14 @@ export default function Addeditorupdate() {
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Education"
+                          placeholder="States"
                           aria-label="Education"
+                          value={stats[dropdownval].states}
+                          onChange={(e) => {
+                            const updatedStats1 = { ...stats }
+                            updatedStats1[dropdownval].states = e.target.value
+                            updateStats(updatedStats1)
+                          }}
                           aria-describedby="basic-addon1"
                         />
                       </div>
@@ -323,7 +351,13 @@ export default function Addeditorupdate() {
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Education"
+                          placeholder="Villages"
+                          value={stats[dropdownval].villages}
+                          onChange={(e) => {
+                            const updatedStats1 = { ...stats }
+                            updatedStats1[dropdownval].villages = e.target.value
+                            updateStats(updatedStats1)
+                          }}
                           aria-label="Education"
                           aria-describedby="basic-addon1"
                         />
@@ -337,11 +371,24 @@ export default function Addeditorupdate() {
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Education"
+                          placeholder="People"
+                          value={stats[dropdownval].people}
+                          onChange={(e) => {
+                            const updatedStats1 = { ...stats }
+                            updatedStats1[dropdownval].people = e.target.value
+                            updateStats(updatedStats1)
+                          }}
                           aria-label="Education"
                           aria-describedby="basic-addon1"
                         />
                       </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <button className="btn btn-primary" onClick={Submit}>
+                        Update
+                      </button>
                     </div>
                   </div>
                 </div>
