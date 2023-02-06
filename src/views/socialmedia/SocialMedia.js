@@ -36,6 +36,7 @@ const SocialMedia = () => {
     whatsapp: '',
     telegram: '',
     gmail: '',
+    linkdin: '',
   })
   const [id, updateId] = useState('')
 
@@ -158,6 +159,19 @@ const SocialMedia = () => {
               handleChange({ name: e.target.name, value: e.target.value })
             }}
             name="telegram"
+            className="mt-2"
+            style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
+            type="text"
+          ></input>
+          <div className="d-flex mt-3">
+            Linkdin <div style={{ color: 'red' }}> *</div>
+          </div>{' '}
+          <input
+            value={socialLink.linkdin}
+            onChange={(e) => {
+              handleChange({ name: e.target.name, value: e.target.value })
+            }}
+            name="linkdin"
             className="mt-2"
             style={{ width: '100%', padding: '5px', borderRadius: '4px' }}
             type="text"

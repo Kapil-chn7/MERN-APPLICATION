@@ -14,7 +14,8 @@ const AddPhoto = () => {
     imageURL: '',
     imageFile: '',
     filesData: [],
-    date: new Date(),
+    date: '2003-03-02',
+    goals: '',
     description: '',
   })
   const [loading, setLoading] = useState(false)
@@ -61,7 +62,8 @@ const AddPhoto = () => {
   }
 
   const handleSubmit = () => {
-    if (data.title.trim() === '' || data.imageURL.trim() === '') {
+    console.log('this is the data', data.imageURL, data.title)
+    if (data.title === '' || data.imageURL.trim() === '' || data.goals === '') {
       swal({
         title: 'Warning',
         text: 'Title or image fields are missing',
@@ -75,6 +77,7 @@ const AddPhoto = () => {
     const formData = new FormData()
     formData.append('title', data.title)
     formData.append('imageFile', data.imageFile)
+    formData.append('goals', data.goals)
     formData.append('description', data.description)
     formData.append('date', data.date)
     data.filesData.forEach((element) => {
@@ -178,7 +181,22 @@ const AddPhoto = () => {
                 />
                 <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
               </div>
-
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon122">
+                  SGD goals
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="3 goals number like 1 12 5"
+                  value={data.goals}
+                  onChange={(e) => {
+                    setData({ ...data, goals: e.target.value })
+                  }}
+                  aria-label="Username"
+                  aria-describedby="basic-addon122"
+                />
+              </div>
               <div className="mb-3">
                 <label htmlFor="imageURL" className="form-label">
                   Upload Image*

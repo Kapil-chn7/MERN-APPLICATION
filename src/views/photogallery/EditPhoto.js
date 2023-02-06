@@ -17,6 +17,7 @@ const EditPhoto = () => {
     image: '',
     description: '',
     date: '',
+    goals: '',
     filesData: [],
   })
   const [dataval, updatedataval] = useState({
@@ -62,13 +63,13 @@ const EditPhoto = () => {
         },
       })
       .then((res) => {
-        console.log('This is the date datedddddddddddddddd ', res.data.data.date)
         setData((prev) => ({
           ...prev,
           title: res.data.data.title,
           filesData: [...res.data.data.filesData],
           description: res.data.data.description,
           image: res.data.data.image,
+          goals: res.data.data.goals,
           date: res.data.data.date.slice(0, 10),
         }))
         setLimiter((prev) => ({ ...prev, titleHas: prev.title - res.data.data.title.length }))
@@ -109,11 +110,10 @@ const EditPhoto = () => {
       formdata.append('id', data.id)
       formdata.append('title', data.title)
       formdata.append('date', data.date)
-
+      formdata.append('goals', data.goals)
       formdata.append('description', data.description)
 
       if (dataval.boolupdate) {
-        console.log('this is the dataval image pppppp ppppp ppppp', dataval.imageURL)
         formdata.append('image', dataval.imageURL)
       }
 
@@ -309,6 +309,23 @@ const EditPhoto = () => {
                   onChange={(e) => handleChange(e)}
                 />
                 <p className="pt-1 pl-2 text-secondary">Remaining words : {limiter.titleHas}</p>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">
+                  SGD goals
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="3 goals number like 1 12 5"
+                  value={data.goals}
+                  onChange={(e) => {
+                    console.log('This is the e.target.value', e.target.value)
+                    setData({ ...data, goals: e.target.value })
+                  }}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
               </div>
               <div className="mb-3">
                 <label htmlFor="imageFile" className="form-label">
