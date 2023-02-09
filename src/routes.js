@@ -113,7 +113,7 @@ const getinvolved = React.lazy(() => import('./views/getinvolved/getinvolved.js'
 const viewgetinvolved = React.lazy(() => import('./views/getinvolved/viewgetinvolved'))
 
 const EditorDelete = React.lazy(() => import('./views/cmsLinks/pages/EditorDelete'))
-const Bannerimages = React.lazy(() => import('./views/bannerimages/Bannerimages'))
+// const Bannerimages = React.lazy(() => import('./views/bannerimages/Bannerimages'))
 
 //maps section
 
@@ -253,11 +253,11 @@ const routes = [
     name: 'Edit Page',
     element: EditorDelete,
   },
-  {
-    path: '/view/bannerimages',
-    name: 'Banner images',
-    element: Bannerimages,
-  },
+  // {
+  //   path: '/view/bannerimages',
+  //   name: 'Banner images',
+  //   element: Bannerimages,
+  // },
 
   //maps
   {

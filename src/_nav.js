@@ -106,12 +106,12 @@ const _nav = [
   //   to: '/view/developers',
   //   icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
   // },
-  {
-    component: CNavItem,
-    name: 'Menu',
-    to: '/menu',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Menu',
+  //   to: '/menu',
+  //   icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+  // },
 
   {
     component: CNavGroup,
@@ -132,12 +132,12 @@ const _nav = [
       },
     ],
   },
-  {
-    component: CNavItem,
-    name: 'Banner Images',
-    to: '/view/bannerimages',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Banner Images',
+  //   to: '/view/bannerimages',
+  //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+  // },
 
   {
     component: CNavItem,
@@ -186,12 +186,12 @@ const _nav = [
     to: '/view/donations',
     icon: <CIcon icon={cilFilterPhoto} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Maps',
-    icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
-    to: '/view/maps',
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Maps',
+  //   icon: <CIcon icon={cilStream} customClassName="nav-icon" />,
+  //   to: '/view/maps',
+  // },
   {
     component: CNavItem,
     name: 'UpdateStats',
@@ -203,24 +203,24 @@ const _nav = [
     name: 'Settings',
     icon: <CIcon icon={cilAppsSettings} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Logos',
-        icon: <CIcon icon={cilCommand} customClassName="nav-icon" />,
-        to: '/view/logos',
-      },
+      // {
+      //   component: CNavItem,
+      //   name: 'Logos',
+      //   icon: <CIcon icon={cilCommand} customClassName="nav-icon" />,
+      //   to: '/view/logos',
+      // },
       {
         component: CNavItem,
         name: 'Social Media',
         icon: <CIcon icon={cilMedicalCross} customClassName="nav-icon" />,
         to: '/view/socialmedia',
       },
-      {
-        component: CNavItem,
-        name: 'Address',
-        icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
-        to: '/view/address',
-      },
+      // {
+      //   component: CNavItem,
+      //   name: 'Address',
+      //   icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+      //   to: '/view/address',
+      // },
       {
         component: CNavItem,
         name: 'Copyright',

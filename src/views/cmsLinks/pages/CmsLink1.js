@@ -533,7 +533,7 @@ export default function AcccessibleTable() {
         >
           <option value="0">Footer</option>
           <option value="1">Advisory Board</option>
-          <option value="2">What do we do</option>
+          {/* <option value="2">What do we do</option> */}
           <option value="3">Our Partner</option>
           <option value="4">Testimonies</option>
         </select>

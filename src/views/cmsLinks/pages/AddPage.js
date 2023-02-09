@@ -8,8 +8,8 @@ import { API } from '../../../API'
 import { isAutheticated } from '../../../components/auth/authhelper'
 import { useNavigate } from 'react-router-dom'
 export default function AddPage() {
-  const [dataObj, updateData] = useState({ title: '', updateditorData: '', file: null })
-  const [choice, updatechoice] = useState('0')
+  const [dataObj, updateData] = useState({ title: '', updateditorData: '' })
+  const [choice, updatechoice] = useState('1')
   const [advisory, updateadvisory] = useState({
     title: '',
     description: '',
@@ -127,20 +127,11 @@ export default function AddPage() {
         const formdata = new FormData()
         formdata.append('title', dataObj.title)
         formdata.append('editordata', dataObj.updateditorData)
-        formdata.append('file', dataObj.file)
-        console.log(
-          'thsi si the file ',
-          formdata.get('file'),
-          formdata.get('title'),
-          formdata.get('editordata'),
-        )
+        // formdata.append('file', dataObj.file)
+        console.log('thsi si the file ', dataObj)
 
         await axios
-          .post(`${API}/api/addpage`, formdata, {
-            headers: {
-              'Content-Type': 'multipart/formdata',
-            },
-          })
+          .post(`${API}/api/addpage`, dataObj)
           .then((resp) => {
             updateloading(false)
             swal({
@@ -413,7 +404,7 @@ export default function AddPage() {
                 />
               </div>
             </div>
-            <div className="row mt-3">
+            {/* <div className="row mt-3">
               <div className="col-md-8  ">
                 <input
                   type="file"
@@ -426,7 +417,7 @@ export default function AddPage() {
                 />
                 <p className="pt-1 pl-2 text-secondary">Upload Videos, images and pdf only*</p>
               </div>
-            </div>
+            </div> */}
           </div>
         )
       case '2':
@@ -615,9 +606,9 @@ export default function AddPage() {
                   chooseval(e.target.value)
                 }}
               >
-                <option value="0">Advisory Board</option>
                 <option value="1">Footer</option>
-                <option value="2">What do we do</option>
+                <option value="0">Advisory Board</option>
+                {/* <option value="2">What do we do</option> */}
                 <option value="3">Our Partners</option>
                 <option value="4">Testimonies</option>
                 {/* <option value="3"></option> */}

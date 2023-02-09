@@ -9,7 +9,6 @@ export default function CmsEditor() {
   const [ckeditorData, updateditorData] = useState({
     updateditorData: '',
     title: '',
-    file: null,
   })
   const [id, updateId] = useState('')
   const location = useLocation()
@@ -17,6 +16,11 @@ export default function CmsEditor() {
   useEffect(() => {
     const stringval = location.pathname.substring(21)
     updateId(stringval)
+    console.log('thsi is the locationbbbbbbb', location.state.data.title)
+    updateditorData({
+      title: location.state.data.title,
+      updateditorData: location.state.data.updateditorData,
+    })
   }, [])
 
   // const updateContent=()=>{
@@ -39,9 +43,9 @@ export default function CmsEditor() {
     newForm.append('title', ckeditorData.title)
 
     newForm.append('updateditorData', ckeditorData.updateditorData)
-    if (ckeditorData.file != null) {
-      newForm.append('file', ckeditorData.file, 'datafile')
-    }
+    // if (ckeditorData.file != null) {
+    //   newForm.append('file', ckeditorData.file, 'datafile')
+    // }
 
     await axios
       .patch(`${API}/api/addpage/${id}`, newForm)
@@ -107,7 +111,7 @@ export default function CmsEditor() {
             />
           </div>
         </div>
-        <div className="row mt-3">
+        {/* <div className="row mt-3">
           <div className="col-md-8  ">
             <input
               type="file"
@@ -120,7 +124,7 @@ export default function CmsEditor() {
             />
             <p className="pt-1 pl-2 text-secondary">Upload Videos, images and pdf only*</p>
           </div>
-        </div>
+        </div> */}
 
         <div className="row mt-3">
           <div className="col-12 ">

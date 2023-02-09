@@ -8,13 +8,20 @@ export default function () {
   const [fileUrl, updateFileUrl] = useState('')
   const [loading, updateLoading] = useState(false)
   const [file, uploadFile] = useState(null)
-  const token = isAutheticated()
+  const token = isAutheticated().token
   //changeCopy right
 
   useEffect(() => {
     updateLoading(true)
+
     axios
-      .get(`${API}/api/copyright`)
+      .get(`${API}/api/copyright`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
       .then((res) => {
         // if (res.data.data.length == 0) {
         //   updatepresentornot(false)
@@ -29,7 +36,7 @@ export default function () {
         updateLoading(false)
       })
       .catch((err) => {
-        console.log('This is the catch', err)
+        console.warn(err)
       })
   }, [])
 

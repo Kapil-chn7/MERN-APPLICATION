@@ -14,7 +14,7 @@ export default function Viewdonations() {
   const [tabledata, updateTable] = useState([])
   const location = useLocation()
   useEffect(() => {
-    console.log('Location', location.state.data)
+    console.log('daaaaaaaaaaaaaaaaaaaaa', location.state.data)
     const obj = location.state.data
     const date = new Date(obj.createdAt).toLocaleString('en-GB', {
       day: 'numeric',
@@ -33,14 +33,23 @@ export default function Viewdonations() {
 
     var hoursIST = ISTTime.getHours()
     var minutesIST = ISTTime.getMinutes()
-
+    const dateval = new Date(obj.createdAt).toLocaleString('en-GB', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    })
     const newarr = []
     console.log('this is the type of push ', typeof newarr)
+    newarr.push(obj.paymentStatus ? 'Paid Successfully' : 'Unsuccessfull Attempt')
     newarr.push(obj.firstname + ' ' + obj.lastname)
-    newarr.push('₹' + obj.damount)
-    newarr.push('₹' + obj.damount)
+    newarr.push('₹' + obj.amount)
+    newarr.push('₹' + obj.amount)
     newarr.push(date)
-    newarr.push(hoursIST + ':' + minutesIST)
+    newarr.push(dateval)
     newarr.push(obj.email)
     newarr.push(obj.phonenumber)
     newarr.push(obj.country)
@@ -61,6 +70,7 @@ export default function Viewdonations() {
   //   ]
 
   const entryvalues = [
+    'Payment Status',
     'Name',
     'Amount',
     'Donation',

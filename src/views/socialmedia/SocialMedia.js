@@ -28,7 +28,9 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { makeStyles } from '@material-ui/core/styles'
 import './SocialMedia.css'
 import { API } from '../../API'
+import { isAutheticated } from 'src/components/auth/authhelper'
 const SocialMedia = () => {
+  const { token } = isAutheticated()
   const [socialLink, setSocialLink] = useState({
     facebook: '',
     youtube: '',
@@ -46,7 +48,16 @@ const SocialMedia = () => {
   const handalSubmit = async () => {
     // console.log('these are the links', socialLink);
     await axios
-      .patch(`${API}/api/addsocialmedia`, { data: socialLink, id: id })
+      .patch(
+        `${API}/api/addsocialmedia`,
+        { data: socialLink, id: id },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
       .then(() => {
         swal({
           title: 'Success',
@@ -66,7 +77,12 @@ const SocialMedia = () => {
   }
   useEffect(() => {
     axios
-      .get(`${API}/api/addsocialmedia`)
+      .get(`${API}/api/addsocialmedia`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((resp) => {
         updateId(resp.data.data[0]._id)
         console.log('this is the resp', resp.data.data[0])
