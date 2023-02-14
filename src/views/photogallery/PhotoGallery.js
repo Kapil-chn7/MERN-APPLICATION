@@ -28,12 +28,11 @@ const PhotoGallery = () => {
         headers: { 'Access-Control-Allow-Origin': '*', Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        console.log(res.data.data)
         setGalleryData(res.data.data)
         setLoading(false)
       })
       .catch((err) => {
-        console.log(err)
+        console.warn(err)
         setLoading(false)
       })
   }

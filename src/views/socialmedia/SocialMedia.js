@@ -85,15 +85,15 @@ const SocialMedia = () => {
       })
       .then((resp) => {
         updateId(resp.data.data[0]._id)
-        console.log('this is the resp', resp.data.data[0])
+
         setSocialLink({ ...resp.data.data[0] })
       })
       .catch((err) => {
         updateId('6332dad285d0af0016e55b7e')
-        console.log('thsi is the error ', err)
+        console.warn(err)
       })
   }, [])
-  console.log('social link', socialLink)
+
   return (
     <>
       <div style={{ color: 'blue', fontSize: '20px', fontWeight: 'bold' }}>Social Media</div>

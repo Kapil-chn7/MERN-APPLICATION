@@ -103,7 +103,6 @@ const Newslettersus = () => {
         headers: { 'Access-Control-Allow-Origin': '*', Authorization: `Bearer ${token}` },
       })
       .then((resp) => {
-        console.log('this is the response', resp)
         updateEmails([...resp.data])
       })
       .catch((err) => {

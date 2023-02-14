@@ -63,7 +63,6 @@ export default function AddPage() {
   }
   const sendToserver = async () => {
     let e = choice
-    console.log('this is the e', e)
 
     if (e === '0') {
       if (
@@ -128,7 +127,6 @@ export default function AddPage() {
         formdata.append('title', dataObj.title)
         formdata.append('editordata', dataObj.updateditorData)
         // formdata.append('file', dataObj.file)
-        console.log('thsi si the file ', dataObj)
 
         await axios
           .post(`${API}/api/addpage`, dataObj)
@@ -181,7 +179,6 @@ export default function AddPage() {
           })
       }
     } else if (e === '3') {
-      console.log('this is our partners', ourpartners)
       if (ourpartners.title === '' || ourpartners.description === '' || ourpartners.file === null) {
         swal({
           title: 'Input is missing',
@@ -213,7 +210,7 @@ export default function AddPage() {
             })
           })
           .catch((err) => {
-            console.log('this is the error', err)
+            console.warn(err)
             updateloading(false)
             swal({
               title: 'Server Error',

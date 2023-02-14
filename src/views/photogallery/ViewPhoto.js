@@ -32,7 +32,6 @@ const ViewPhoto = () => {
         },
       })
       .then((res) => {
-        console.log('this is the reponse ', res.data.data.description)
         setData((prev) => ({
           ...prev,
           title: res.data.data.title,
@@ -117,8 +116,6 @@ const ViewPhoto = () => {
             </div>
             <div className="row">
               {data.filesData.map((e, i) => {
-                console.log('thsi is e ', e, i)
-
                 if (Object.keys(e)[0] === 'image') {
                   return (
                     <div className="col mb-3" key={i}>

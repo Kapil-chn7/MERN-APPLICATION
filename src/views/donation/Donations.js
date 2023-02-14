@@ -121,7 +121,7 @@ const Newslettersus = () => {
         updatetdata(resp.data.data)
       })
       .catch((err) => {
-        console.log('this is the error', err)
+        console.warn('this is the error', err)
       })
   }, [])
 

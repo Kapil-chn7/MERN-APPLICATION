@@ -56,13 +56,11 @@ const AddPhoto = () => {
     } else if (e.target.id === 'textarea80words') {
       setData({ ...data, description: e.target.value })
     } else if (e.target.id === 'filesData') {
-      console.log('event multiple files', e.target.files)
       setData((prev) => ({ ...prev, filesData: [...e.target.files] }))
     }
   }
 
   const handleSubmit = () => {
-    console.log('this is the data', data.imageURL, data.title)
     if (data.title === '' || data.imageURL.trim() === '' || data.goals === '') {
       swal({
         title: 'Warning',
@@ -221,7 +219,6 @@ const AddPhoto = () => {
                   value={data.date}
                   // accept="image/*"
                   onChange={(e) => {
-                    console.log('This is the e', e.target.value)
                     setData({ ...data, date: e.target.value })
                   }}
                 />

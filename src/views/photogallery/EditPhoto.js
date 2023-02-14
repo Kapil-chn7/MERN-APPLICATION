@@ -30,7 +30,6 @@ const EditPhoto = () => {
   const [limiter, setLimiter] = useState({ title: 50, titleHas: 50 })
   const deleteElement = async (obj) => {
     const obj1 = { id: id, obj }
-    console.log('this is the obj', obj1)
 
     await axios
       .delete(`${API}/api/photogallery/deleteElement`, { data: obj1 })
@@ -88,7 +87,6 @@ const EditPhoto = () => {
     } else if (e.target.id === 'textarea80words') {
       setData((prev) => ({ ...prev, description: e.target.value }))
     } else if (e.target.id === 'imageURL') {
-      console.log('this is the file ', e.target.files[0])
       updatedataval((prev) => ({ ...prev, imageURL: e.target.files[0], boolupdate: true }))
     } else if (e.target.id === 'filesData') {
       updatedataval((prev) => ({ ...prev, filesDataupdate: [...e.target.files] }))
@@ -320,7 +318,6 @@ const EditPhoto = () => {
                   placeholder="3 goals number like 1 12 5"
                   value={data.goals}
                   onChange={(e) => {
-                    console.log('This is the e.target.value', e.target.value)
                     setData({ ...data, goals: e.target.value })
                   }}
                   aria-label="Username"
@@ -338,7 +335,6 @@ const EditPhoto = () => {
                   value={data.date}
                   // accept="image/*"
                   onChange={(e) => {
-                    console.log('This is the e', e.target.value)
                     setData({ ...data, date: e.target.value })
                   }}
                 />
@@ -395,7 +391,6 @@ const EditPhoto = () => {
                   //   accept="image/*"
                   multiple={true}
                   onChange={(e) => {
-                    console.log('hiiii', e.target.files)
                     handleChange(e)
                   }}
                 />

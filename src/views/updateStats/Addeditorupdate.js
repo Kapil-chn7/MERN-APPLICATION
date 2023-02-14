@@ -88,7 +88,6 @@ export default function Addeditorupdate() {
           },
         )
         .then((resp) => {
-          console.log('resp', resp)
           setLoading(false)
           swal({
             title: 'Updated SuccessFully',
@@ -99,7 +98,7 @@ export default function Addeditorupdate() {
           })
         })
         .catch((err) => {
-          console.log(err)
+          console.warn(err)
           swal({
             title: 'Server Error',
             text: 'Something went wrong',
